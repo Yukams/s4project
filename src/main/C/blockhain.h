@@ -6,10 +6,10 @@
 #define PROJET_BLOCKHAIN_
 #include "block.h"
 
-typedef struct blockchain_s {
+typedef struct {
     int difficulty;
     int nb_blocs;
-    block_t *block_list;
-} blockchain_t;
+    Block *block_list;
+} Blockchain;
 
 #endif //PROJET_BLOCKHAIN_H

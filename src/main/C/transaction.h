@@ -1,11 +1,12 @@
 #ifndef PROJET_TRANSACTION_H
 #define PROJET_TRANSACTION_H
 
-#define MAX_RANDINT 100
-#define MAX_STRING 100
+#define MAX_RANDINT 99
+#define MAX_NAME_LENGTH 16
+#define MAX_STRING_LENGTH 91
 
 /*==================================================================*/
-typedef struct transaction_s *Transaction;
+typedef struct transaction_s* Transaction;
 
 /* PUBLIC */
 Transaction create_transaction(char * source, char * destination, double value);

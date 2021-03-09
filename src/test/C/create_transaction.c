@@ -6,11 +6,16 @@
 
 int main(void) {
     Transaction transaction;
-    char* source = "Pierre";
-    char* destination = "Paul";
+    char source[MAX_NAME_LENGTH] = "Pierre";
+    char destination[MAX_NAME_LENGTH] = "Paul";
     double value = 0.1;
+    long int valueSatoBnb = 10000000; // 10 000 000
+    char string[MAX_STRING_LENGTH];
 
     transaction = create_transaction(source, destination, value);
+
+    int randInt = getRandInt(transaction); // Can't get it otherwise
+    sprintf(string, "Source user%s-Destination : user%s%d%ld", source, destination, randInt, valueSatoBnb);
 
     /* Source */
     char* check_source = getSource(transaction);
@@ -40,7 +45,7 @@ int main(void) {
 
     /* Value SatoBnb */
     long int check_satobnb_value = getSatoBnbValue(transaction);
-    if(check_satobnb_value != toSatoBnb(value)) {
+    if(check_satobnb_value != valueSatoBnb) {
         printf("[%sKO%s] : Transaction SatoBNB value is incorrect ||| more => Transaction.value : %ld != value : %ld\n", RED, NRM, check_satobnb_value, toSatoBnb(value));
     } else {
         printf("[%sOK%s] : Transaction SatoBNB value is correct\n", GRN, NRM);
@@ -58,9 +63,7 @@ int main(void) {
 
     /* String */
     char* check_string = getString(transaction);
-    char string[MAX_STRING];
-    sprintf(string, "Source user%s-Destination : user%s%d%ld", check_source, check_destination, check_randint, check_satobnb_value);
-    if(strcmp(check_string, string)) {
+    if(strcmp(check_string, string) != 0) {
         printf("[%sKO%s] : Transaction string is incorrect ||| more => Transaction.string : %s ||| string : %s\n", RED, NRM, check_string, string);
     } else {
         printf("[%sOK%s] : Transaction string is correct\n", GRN, NRM);

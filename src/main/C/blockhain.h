@@ -1,9 +1,5 @@
-//
-// Created by Valentin on 06/03/2021.
-//
-
 #ifndef PROJET_BLOCKHAIN_H
-#define PROJET_BLOCKHAIN_
+#define PROJET_BLOCKHAIN_H
 #include "block.h"
 
 typedef struct {
@@ -12,4 +8,4 @@ typedef struct {
     Block *block_list;
 } Blockchain;
 
-#endif //PROJET_BLOCKHAIN_H
+#endif PROJET_BLOCKHAIN_H

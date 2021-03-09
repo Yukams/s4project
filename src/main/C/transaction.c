@@ -8,15 +8,15 @@
 /*==================================================================*/
 /* STRUCTURE */
 struct transaction_s {
-    char *source;
-    char *destination;
+    char source[MAX_NAME_LENGTH];
+    char destination[MAX_NAME_LENGTH];
     int randint;
     long int value; // En SatoBNB
-    char string[MAX_STRING];
+    char string[MAX_STRING_LENGTH];
 };
 
 /*==================================================================*/
-/* FONCTIONS */
+/* FUNCTIONS */
 
 /* PRIVATE */
 int randInt() {
@@ -38,14 +38,14 @@ double fromSatoBnb(long int value) {
 Transaction create_transaction(char * source, char * destination, double value) {
     Transaction transaction = malloc(sizeof(struct transaction_s));
 
-    transaction->destination = destination;
-    transaction->source = source;
+    strcpy(transaction->destination, destination);
+    strcpy(transaction->source, source);
     transaction->value = toSatoBnb(value);
 
     transaction->randint = randInt();
     if(transaction->randint == 0) {transaction->randint = 1;} // Il est demandé que le nombre soit au minimum 1
 
-    sprintf(transaction->string, "Source user%s-Destination : user%s%d%ld",transaction->source,transaction->destination,transaction->randint,transaction->value);
+    sprintf(transaction->string, "Source user%s-Destination : user%s%d%ld", transaction->source, transaction->destination, transaction->randint, transaction->value);
 
     return transaction;
 }

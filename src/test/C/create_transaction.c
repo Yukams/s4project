@@ -1,7 +1,7 @@
-#include "../../main/C/transaction.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../../main/C/transaction.h"
 #include "test.h"
 
 int main(void) {
@@ -19,7 +19,7 @@ int main(void) {
 
     /* Source */
     char* check_source = getSource(transaction);
-    if(strcmp(check_source, source)) {
+    if(strcmp(check_source, source) != 0) {
         printf("[%sKO%s] : Transaction source is incorrect ||| more => Transaction.source : %s != source : %s\n", RED, NRM, check_source, source);
     } else {
         printf("[%sOK%s] : Transaction source is correct\n", GRN, NRM);
@@ -27,7 +27,7 @@ int main(void) {
 
     /* Destination */
     char* check_destination = getDestination(transaction);
-    if(strcmp(check_destination, destination)) {
+    if(strcmp(check_destination, destination) != 0) {
         printf("[%sKO%s] : Transaction destination is incorrect ||| more => Transaction.destination : %s != destination : %s\n", RED, NRM, check_destination, destination);
     } else {
         printf("[%sOK%s] : Transaction destination is correct\n", GRN, NRM);

@@ -8,17 +8,30 @@ UTILDIR = utils/C_Packages/Sha256
 OBJDIR = obj
 BINDIR = bin
 
+
 # TRANSACTION
 TRANS_MAIN = create_transaction.o
 TRANS_C = transaction.o
-TRANS_ALL = $(TRANS_MAIN) $(TRANS_C)
+
+TRANS_DEP = $(TRANS_C)
+TRANS_ALL = $(TRANS_DEP) $(TRANS_MAIN)
+
 
 # BLOCK
 BLOCK_MAIN = create_block.o
 BLOCK_C = block.o
 UTIL_256 = sha256.o
 UTIL_256_MORE = sha256_utils.o
-BLOCK_ALL = $(UTIL_256_MORE) $(UTIL_256) $(BLOCK_MAIN) $(BLOCK_C) $(TRANS_C)
+
+BLOCK_DEP = $(UTIL_256_MORE) $(UTIL_256) $(BLOCK_C) $(TRANS_DEP)
+BLOCK_ALL = $(BLOCK_DEP) $(BLOCK_MAIN)
+
+
+# CHAIN
+CHAIN_MAIN = create_blockhain.o
+CHAIN_C = blockhain.o
+
+CHAIN_ALL = $(BLOCK_DEP) $(CHAIN_MAIN)
 
 
 # TESTS Transaction
@@ -29,6 +42,10 @@ transaction: $(TRANS_ALL)
 
 block: $(BLOCK_ALL)
 	$(CC) -o $(BINDIR)/block $(BLOCK_ALL)
+	mv *.o $(OBJDIR)/
+
+chain: $(CHAIN_ALL)
+	$(CC) -o $(BINDIR)/block $(CHAIN_ALL)
 	mv *.o $(OBJDIR)/
 
 %.o: $(TESTDIR)/%.c

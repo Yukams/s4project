@@ -1,5 +1,10 @@
 #ifndef PROJET_TRANSACTION_H
 #define PROJET_TRANSACTION_H
+#include <time.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <math.h>
 
 #define MAX_RANDINT 99
 #define MAX_NAME_LENGTH 16
@@ -9,7 +14,9 @@
 typedef struct transaction_s* Transaction;
 
 /* PUBLIC */
-Transaction create_transaction(char * source, char * destination, double value);
+Transaction create_transaction();
+
+void init_transaction(Transaction transaction, char * source, char * destination, double value);
 
 long int toSatoBnb(double value);
 

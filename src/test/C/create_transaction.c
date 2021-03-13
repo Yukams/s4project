@@ -5,14 +5,13 @@
 #include "test.h"
 
 int main(void) {
-    Transaction transaction;
+    Transaction transaction = create_transaction();
     char source[MAX_NAME_LENGTH] = "Pierre";
     char destination[MAX_NAME_LENGTH] = "Paul";
     double value = 0.1;
     long int valueSatoBnb = 10000000; // 10 000 000
     char string[MAX_STRING_LENGTH];
-
-    transaction = create_transaction(source, destination, value);
+    init_transaction(transaction, source, destination, value);
 
     int randInt = getRandInt(transaction); // Can't get it otherwise
     sprintf(string, "Source user%s-Destination : user%s%d%ld", source, destination, randInt, valueSatoBnb);
@@ -69,6 +68,5 @@ int main(void) {
         printf("[%sOK%s] : Transaction string is correct\n", GRN, NRM);
     }
 
-    free(transaction);
     return 0;
 }

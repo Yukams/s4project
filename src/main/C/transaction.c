@@ -1,8 +1,3 @@
-#include <time.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include <math.h>
 #include "transaction.h"
 
 /*==================================================================*/
@@ -35,9 +30,12 @@ double fromSatoBnb(long int value) {
     return new_value;
 }
 
-Transaction create_transaction(char * source, char * destination, double value) {
+Transaction create_transaction() {
     Transaction transaction = malloc(sizeof(struct transaction_s));
+    return transaction;
+}
 
+void init_transaction(Transaction transaction, char * source, char * destination, double value) {
     strcpy(transaction->destination, destination);
     strcpy(transaction->source, source);
     transaction->value = toSatoBnb(value);
@@ -46,8 +44,6 @@ Transaction create_transaction(char * source, char * destination, double value) 
     if(transaction->randint == 0) {transaction->randint = 1;} // Il est demandé que le nombre soit au minimum 1
 
     sprintf(transaction->string, "Source user%s-Destination : user%s%d%ld", transaction->source, transaction->destination, transaction->randint, transaction->value);
-
-    return transaction;
 }
 
 /* FOR DEBUG PURPOSE */

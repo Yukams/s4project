@@ -15,24 +15,17 @@ typedef struct transaction_s* Transaction;
 
 /* PUBLIC */
 Transaction create_transaction();
-
 void init_transaction(Transaction transaction, char * source, char * destination, double value);
-
 long int toSatoBnb(double value);
-
 double fromSatoBnb(long int value);
+void delete_transaction(Transaction transaction);
 
 /* FOR DEBUG PURPOSE */
 char* getSource(Transaction transaction);
-
 char* getDestination(Transaction transaction);
-
 double getBnbValue(Transaction transaction);
-
 long int getSatoBnbValue(Transaction transaction);
-
 int getRandInt(Transaction transaction);
-
 char* getString(Transaction transaction);
 
 /*==================================================================*/

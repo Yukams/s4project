@@ -18,6 +18,7 @@ typedef struct block_s* Block;
 /* PUBLIC */
 Block create_block();
 void init_block(Block block, int index, char* prev_hash, int nb_trans, Transaction *transaction);
+void delete_block(Block block);
 
 /* FOR DEBUG PURPOSE */
 int getIndex(Block b);

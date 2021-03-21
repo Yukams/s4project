@@ -68,5 +68,7 @@ int main(void) {
         printf("[%sOK%s] : Transaction string is correct\n", GRN, NRM);
     }
 
+    delete_transaction(transaction);
+
     return 0;
 }

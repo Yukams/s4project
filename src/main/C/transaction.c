@@ -30,8 +30,15 @@ double fromSatoBnb(long int value) {
     return new_value;
 }
 
+void delete_transaction(Transaction transaction) {
+    free(transaction);
+}
+
 Transaction create_transaction() {
     Transaction transaction = malloc(sizeof(struct transaction_s));
+    if(transaction == NULL) {
+        printf("\n*** Error : malloc transaction ***\n");
+    }
     return transaction;
 }
 

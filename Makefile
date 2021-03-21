@@ -28,10 +28,11 @@ BLOCK_ALL = $(BLOCK_DEP) $(BLOCK_MAIN)
 
 
 # CHAIN
-CHAIN_MAIN = create_blockhain.o
-CHAIN_C = blockhain.o
+CHAIN_MAIN = create_blockchain.o
+CHAIN_C = blockchain.o
 
-CHAIN_ALL = $(BLOCK_DEP) $(CHAIN_MAIN)
+CHAIN_DEP = $(BLOCK_DEP) $(CHAIN_C)
+CHAIN_ALL = $(CHAIN_DEP) $(CHAIN_MAIN)
 
 
 # TESTS Transaction
@@ -45,7 +46,7 @@ block: $(BLOCK_ALL)
 	mv *.o $(OBJDIR)/
 
 chain: $(CHAIN_ALL)
-	$(CC) -o $(BINDIR)/block $(CHAIN_ALL)
+	$(CC) -o $(BINDIR)/chain $(CHAIN_ALL)
 	mv *.o $(OBJDIR)/
 
 %.o: $(TESTDIR)/%.c

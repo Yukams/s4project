@@ -37,7 +37,8 @@ void create_hash(Block b) {
     char hashString[200 + 140 * MAX_TRANS] = "";
 
     // Builds the whole string
-    sprintf(hashString, "%d %s %s %d %s", b->index, b->timestamp, b->prev_hash, b->nonce, string);
+    sprintf(hashString, "%d %s %s %s %d %d %s", b->index, b->timestamp, b->prev_hash, b->hash_root, b->nonce, b->nb_trans, string);
+    //sprintf(hashString, "%d %s %s %d %s", b->index, b->timestamp, b->prev_hash, b->nonce, string);
     // manque nb_trans et hash_root provoquent des erreurs memoire
 
     // Transforms into SHA256 string
@@ -50,8 +51,19 @@ void create_hash(Block b) {
     strcpy(b->hash, hashRes);
 }
 
+void delete_block(Block block) {
+    for(int i = 0; i < block->nb_trans; i++) {
+        delete_transaction(block->trans_list[i]);
+    }
+
+    free(block);
+}
+
 Block create_block() {
     Block block = malloc(sizeof(struct block_s));
+    if(block == NULL) {
+        printf("\n*** Error : malloc block ***\n");
+    }
     return block;
 }
 

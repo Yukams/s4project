@@ -138,6 +138,7 @@ int main(void) {
     printf("[%sOK%s] : Block hash %s\n", GRN, NRM, getHash(b2));
 
     delete_blockchain(bc);
+    delete_transaction_list(trans_list_2);
 
     return 0;
 }

@@ -11,6 +11,9 @@ int main(void) {
   add_transaction(tList, "Momo", "Gabou", 0.02);
 
   add_block(bc, &tList);
+  
+  delete_blockchain(bc);
+  delete_transaction_list(tList);
   return 0;
 }
 ```

@@ -2,8 +2,8 @@ CC  = gcc
 SYS = -Wall -pedantic -DUNIX
 INC = -I.
 
-MAINDIR = src/main/C
-TESTDIR = src/test/C
+MAINDIR = src/main
+TESTDIR = src/test
 UTILDIR = utils/C_Packages/Sha256
 OBJDIR = obj
 BINDIR = bin
@@ -23,7 +23,7 @@ BLOCK_C = block.o
 UTIL_256 = sha256.o
 UTIL_256_MORE = sha256_utils.o
 
-BLOCK_DEP = $(UTIL_256_MORE) $(UTIL_256) $(BLOCK_C) $(TRANS_DEP)
+BLOCK_DEP = $(UTIL_256_MORE) $(UTIL_256) $(TRANS_DEP) $(BLOCK_C)
 BLOCK_ALL = $(BLOCK_DEP) $(BLOCK_MAIN)
 
 

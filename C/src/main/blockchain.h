@@ -8,8 +8,7 @@ typedef struct blockchain_s* Blockchain;
 /* PUBLIC */
 Blockchain create_blockchain();
 void delete_blockchain(Blockchain blockchain);
-void init_blockchain(Blockchain blockchain);
-void add_block(Blockchain blockchain, Block block);
+void add_block(Blockchain blockchain, Transactions *transaction_list);
 
 /* FOR DEBUG PURPOSE */
 int getDifficulty(Blockchain blockchain);

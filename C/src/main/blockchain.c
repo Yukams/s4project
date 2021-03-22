@@ -6,36 +6,31 @@ struct blockchain_s {
     Block block_list[NB_BLOCKS];
 };
 
+
 /* PUBLIC */
 Blockchain create_blockchain() {
+    Transactions tList = create_transaction_list();
+    Block genesis = create_block(0, "0", &tList);
+
     Blockchain blockchain = malloc(sizeof(struct blockchain_s));
     if(blockchain == NULL) {
         printf("\n*** Error : malloc block ***\n");
     }
+
+    blockchain->block_list[0] = genesis;
+    blockchain->nb_blocs = 1;
+    blockchain->difficulty = 4;
+
     return blockchain;
 }
 
-void init_blockchain(Blockchain blockchain) {
-    blockchain->nb_blocs = 0;
-
-    // Création du Génesis
-    Block genesis = create_block();
-    init_block(genesis, 0, "0", 0, NULL);
-    add_block(blockchain, genesis);
-
-    blockchain->difficulty = 4;
-}
-
-void add_block(Blockchain blockchain, Block block) {
+void add_block(Blockchain blockchain, Transactions *transaction_list) {
+    Block block = create_block(blockchain->nb_blocs, getHash(blockchain->block_list[blockchain->nb_blocs-1]), transaction_list);
     blockchain->block_list[blockchain->nb_blocs] = block;
     blockchain->nb_blocs += 1;
 }
 
 void delete_blockchain(Blockchain blockchain) {
-    for(int i = 0; i < blockchain->nb_blocs; i++) {
-        delete_block(blockchain->block_list[i]);
-    }
-
     free(blockchain);
 }
 

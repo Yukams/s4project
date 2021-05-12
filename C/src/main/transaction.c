@@ -72,6 +72,7 @@ Transactions create_transaction_list() {
         printf("\n*** Error : malloc transaction ***\n");
     }
     transaction_list->nb_trans = 0;
+    
 
     return transaction_list;
 }

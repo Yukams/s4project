@@ -9,10 +9,13 @@ struct blockchain_s {
 
 /* PUBLIC */
 Blockchain create_blockchain() {
+    
     Transactions tList = create_transaction_list();
+    
     Block genesis = create_block(0, "0", &tList);
-
+    
     Blockchain blockchain = malloc(sizeof(struct blockchain_s));
+    
     if(blockchain == NULL) {
         printf("\n*** Error : malloc block ***\n");
     }
@@ -20,7 +23,7 @@ Blockchain create_blockchain() {
     blockchain->block_list[0] = genesis;
     blockchain->nb_blocs = 1;
     blockchain->difficulty = 4;
-
+    printf("%d sheesh\n",getNb_trans( getTrans_list( getBlock_list(blockchain)[0])));
     return blockchain;
 }
 

@@ -8,7 +8,6 @@ UTILDIR = utils/C_Packages/Sha256
 OBJDIR = obj
 BINDIR = bin
 
-
 # TRANSACTION
 TRANS_MAIN = create_transaction.o
 TRANS_C = transaction.o
@@ -35,6 +34,7 @@ CHAIN_DEP = $(BLOCK_DEP) $(CHAIN_C)
 CHAIN_ALL = $(CHAIN_DEP) $(CHAIN_MAIN)
 
 
+
 # TESTS Transaction
 # ------------------------------------------------------------
 transaction: $(TRANS_ALL)
@@ -48,6 +48,7 @@ block: $(BLOCK_ALL)
 chain: $(CHAIN_ALL)
 	$(CC) -o $(BINDIR)/chain $(CHAIN_ALL)
 	mv *.o $(OBJDIR)/
+	
 
 %.o: $(TESTDIR)/%.c
 	$(CC) -o $@ -c $< $(SYS) $(INC)

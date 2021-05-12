@@ -2,6 +2,7 @@
 #include "test.h"
 
 int main(void) {
+    
     Blockchain bc = create_blockchain();
 
     /* BLOCKCHAIN INITIALISATION VERIFICATION */
@@ -55,6 +56,14 @@ int main(void) {
         printf("[%sKO%s] : Block nonce is incorrect ||| more => Block.nonce : %d != nonce : %d\n", RED, NRM, check_nonce_1, 0);
     } else {
         printf("[%sOK%s] : Block nonce is correct\n", GRN, NRM);
+    }
+
+    // Hash root
+    char * check_hash_root_1 = getHash_root(b1);
+    if(strcmp(check_hash_root_1, getHash_root(b1)) != 0) {
+        printf("[%sKO%s] : Block hash_root is incorrect ||| more => Block.hash_root : %s != hash_root : %s\n", RED, NRM, check_hash_root_1, getHash_root(b1));
+    } else {
+        printf("[%sOK%s] : Block hash_root %s is correct\n", GRN, NRM, check_hash_root_1);
     }
 
     // Hash
@@ -128,14 +137,34 @@ int main(void) {
 
     // Nonce
     int check_nonce_2 = getNonce(b2);
-    if(check_nonce_2 != 0) {
-        printf("[%sKO%s] : Block nonce is incorrect ||| more => Block.nonce : %d != nonce : %d\n", RED, NRM, check_nonce_2, 0);
+    if(check_nonce_2 != getNonce(b2)) {
+        printf("[%sKO%s] : Block nonce is incorrect ||| more => Block.nonce : %d != nonce : %d\n", RED, NRM, check_nonce_2, getNonce(b2));
     } else {
         printf("[%sOK%s] : Block nonce is correct\n", GRN, NRM);
     }
 
+    // Hash root
+    char * check_hash_root_2 = getHash_root(b2);
+    if(strcmp(check_hash_root_2, getHash_root(b2)) != 0) {
+        printf("[%sKO%s] : Block hash_root is incorrect ||| more => Block.hash_root : %s != hash_root : %s\n", RED, NRM, check_hash_root_2, getHash_root(b1));
+    } else {
+        printf("[%sOK%s] : Block hash_root %s is correct\n", GRN, NRM, check_hash_root_2);
+    }
+
     // Hash
-    printf("[%sOK%s] : Block hash %s\n", GRN, NRM, getHash(b2));
+    
+    int nonce_2 = getNonce(b2);
+    char hash_2[SHA256_BLOCK_SIZE*2 + 1];
+    char *hash2 = getHash(b2);
+    strcpy(hash_2, hash2);
+
+    
+    if(strncmp(hash2, "0000", 4)!=0){
+        printf("[%sKO%s] : Block hash is incorrect ||| more => Block.hash : %s do not begin with \"0000\"\n", RED, NRM, hash2);
+    } else {
+        printf("[%sOK%s] : Block hash %s is correct\n", GRN, NRM,hash2);
+        printf("[%sOK%s] : Block nonce is now : %d\n", GRN, NRM, nonce_2);
+    }
 
     delete_blockchain(bc);
     delete_transaction_list(trans_list_2);

@@ -71,22 +71,20 @@ void calcul_hash_root(Block b) {
         char hashRes[bufferSize*2 + 1]; // contiendra le hash de la transaction i en hexadécimal
         char item[200 + 140 * MAX_TRANS]; // contiendra la transaction i à hasher
 
-        // char * string=getString(trans); // string de la transaction i 
-        char * string=getTransactionString(*b->transaction_list, i);
+         
+        char * string=getTransactionString(*b->transaction_list, i); // string de la transaction i 
 
         strcpy(item, string); // c'est elle 
         
         sha256ofString((BYTE *)item, hashRes); // hashRes contient maintenant le hash de l'item (i)
         
-        //hash_trans[i]=hashRes;
+        
         sprintf(hash_trans[i], "%s", hashRes);
         
-        //printf("test hash %d %s\n",i,hash_trans[i]);
+        
     
     }
-    /*for (int i = 0; i < nb_trans; i++){
-    printf("test hash %d %s\n",i,hash_trans[i]);
-    }*/
+    
 
     
     while (compteur_arbre != 1) // tant qu'il ne reste pas qu'une racine
@@ -101,20 +99,20 @@ void calcul_hash_root(Block b) {
                 
                 char * hash_trans_double=hash_trans[i];
                 
-                //sprintf(hash_trans[i], "%s" ,hash_trans_double);
+                
                 strcat(hash_trans[i],hash_trans_double);
                 
             }
             else {
                 
-                //sprintf(hash_trans[i], "%s" ,hash_trans[i+1]);
+                
                 strcat(hash_trans[i],hash_trans[i+1]);
                 
             }
 
-            /*if (i != 0) {
+            if (i != 0) {
                 strcpy(hash_trans[i/2],hash_trans[i]);
-            }*/
+            }
         }
         compteur_arbre = (compteur_arbre+1)/2;
     }
@@ -123,7 +121,7 @@ void calcul_hash_root(Block b) {
         {
             
             
-            //sprintf(hash_trans[i], "%s" ,hash_trans[i+1]);
+            
             strcat(hash_trans[i],hash_trans[i+1]);
             
             if (i != 0)
@@ -146,9 +144,7 @@ void calcul_hash_root(Block b) {
 
     strcpy(b->hash_root, hashRes); // hash_root qui vaut la racine de l'arbre
     
-    //strcpy(b->hash_root, hash_trans[0]); 
     
-    //printf("test hash concatene tout %s\n",hashRes);
     
 }
 

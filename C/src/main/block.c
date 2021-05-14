@@ -165,8 +165,8 @@ Block create_block(int index, char* prev_hash, Transactions *transaction_list) {
 
     block->transaction_list = transaction_list;
     
-    //calcul_hash_root(block);
-    strcpy(block->hash_root, "0");
+    calcul_hash_root(block);
+    
     
     block->nonce = 0;
 

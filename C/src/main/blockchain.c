@@ -32,7 +32,7 @@ Blockchain create_blockchain(int difficulty, int max_size) {
     return blockchain;
 }
 
-void calcul_hash(Block b) {
+/*void calcul_hash(Block b) {
     // Constructs a string from each of transaction's string
     char string[MAX_STRING_LENGTH * MAX_TRANS];
     int nb_trans =getNb_trans((getTrans_list(b)));
@@ -55,7 +55,7 @@ void calcul_hash(Block b) {
     strcpy(item, hashString); // c'est elle 
     sha256ofString((BYTE *)item, hashRes); // hashRes contient maintenant le hash de l'item
     strcpy(getHash(b), hashRes);
-}
+}*/
 
 void find_good_hash (Block b, int difficulte) {
 
@@ -66,7 +66,8 @@ void find_good_hash (Block b, int difficulte) {
         while (strncmp(chaine, "0000000000",difficulte)!=0)
         {
             incrementNonce(b);
-            calcul_hash(b); 
+            //calcul_hash(b); 
+            create_hash(b);
             chaine=getHash(b);
         }
     }

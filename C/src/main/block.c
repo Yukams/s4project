@@ -60,9 +60,12 @@ void calcul_hash_root(Block b) {
         strcpy(b->hash_root,"0");
         return;
     }
-    char *hash_trans[MAX_TRANS]; //tableau de chaine de caractere de chaque transaction
+    char hash_trans[MAX_TRANS][10*SHA256_BLOCK_SIZE+1]; //tableau de chaine de caractere de chaque transaction
     int compteur_arbre = nb_trans;
     
+    
+
+
     // Calcul of hash for each transactions
     for (int i = 0; i < nb_trans; i++)
     {
@@ -80,9 +83,15 @@ void calcul_hash_root(Block b) {
         
         sha256ofString((BYTE *)item, hashRes); // hashRes contient maintenant le hash de l'item (i)
         
-        hash_trans[i]=hashRes;
+        //hash_trans[i]=hashRes;
+        sprintf(hash_trans[i], "%s", hashRes);
         
+        //printf("test hash %d %s\n",i,hash_trans[i]);
+    
     }
+    /*for (int i = 0; i < nb_trans; i++){
+    printf("test hash %d %s\n",i,hash_trans[i]);
+    }*/
 
     
     while (compteur_arbre != 1) // tant qu'il ne reste pas qu'une racine
@@ -90,18 +99,22 @@ void calcul_hash_root(Block b) {
 
         if (compteur_arbre % 2 != 0) //si nombre de transaction ou hash intermédiaire impair
     {
-        for (int i = 0; i < compteur_arbre; i=i+2)
+        for (int i = 0; i < compteur_arbre+1; i=i+2)
         {
             if (i == compteur_arbre-1)
             {
                 
                 char * hash_trans_double=hash_trans[i];
                 
-                sprintf(hash_trans[i], "%s" ,hash_trans_double);
+                //sprintf(hash_trans[i], "%s" ,hash_trans_double);
+                strcat(hash_trans[i],hash_trans_double);
+                
             }
             else {
                 
-                sprintf(hash_trans[i], "%s" ,hash_trans[i+1]);
+                //sprintf(hash_trans[i], "%s" ,hash_trans[i+1]);
+                strcat(hash_trans[i],hash_trans[i+1]);
+                
             }
 
             if (i != 0)
@@ -119,20 +132,33 @@ void calcul_hash_root(Block b) {
         {
             
             
-            sprintf(hash_trans[i], "%s" ,hash_trans[i+1]);
-
+            //sprintf(hash_trans[i], "%s" ,hash_trans[i+1]);
+            strcat(hash_trans[i],hash_trans[i+1]);
+            
             if (i != 0)
             {
+                
                 strcpy(hash_trans[i/2],hash_trans[i]);
+                
             }
             
         }
+        
         compteur_arbre = (compteur_arbre)/2;
         }
     }
+
+    // Transforms into SHA256 string de la concaténation
+    char hashRes[200 + 140 * MAX_TRANS];
+    char * item = malloc((200 + 140 * MAX_TRANS)*sizeof(char));
+    strcpy(item, hash_trans[0]); 
+    sha256ofString((BYTE *)item, hashRes); // hashRes contient maintenant le hash de l'item
+
+    strcpy(b->hash_root, hashRes); // hash_root qui vaut la racine de l'arbre
     
-    strcpy(b->hash_root, hash_trans[0]); // hash_root qui vaut la racine de l'arbre
+    //strcpy(b->hash_root, hash_trans[0]); 
     
+    //printf("test hash concatene tout %s\n",hashRes);
     
 }
 

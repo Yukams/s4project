@@ -3,27 +3,32 @@
 struct blockchain_s {
     int difficulty;
     int nb_blocs;
-    Block block_list[NB_BLOCKS];
+    int max_size;
+    Block *block_list;
 };
 
 
 /* PUBLIC */
-Blockchain create_blockchain() {
-    
+Blockchain create_blockchain(int difficulty, int max_size) {
     Transactions tList = create_transaction_list();
     
     Block genesis = create_block(0, "0", &tList);
-    
-    Blockchain blockchain = malloc(sizeof(struct blockchain_s));
-    
-    if(blockchain == NULL) {
-        printf("\n*** Error : malloc block ***\n");
-    }
 
+    Blockchain blockchain = malloc(sizeof(struct blockchain_s));
+    if(blockchain == NULL) {
+        printf("\n*** Error : malloc blockchain ***\n");
+    }
+    blockchain->block_list = malloc(max_size * sizeof(Block *));
+    if(blockchain->block_list == NULL) {
+        printf("\n*** Error : malloc blockchain block list ***\n");
+    }
+    printf("ok1\n");
+    blockchain->difficulty = difficulty;
+    printf("ok2\n");
     blockchain->block_list[0] = genesis;
+    printf("ok3\n");
     blockchain->nb_blocs = 1;
-    blockchain->difficulty = 4;
-    printf("%d sheesh\n",getNb_trans( getTrans_list( getBlock_list(blockchain)[0])));
+    printf("ok4\n");
     return blockchain;
 }
 
@@ -53,7 +58,7 @@ void calcul_hash(Block b) {
 }
 
 void find_good_hash (Block b, int difficulte) {
-    
+
     //vérification du hash
     char* chaine=getHash(b);
 
@@ -69,13 +74,21 @@ void find_good_hash (Block b, int difficulte) {
 }
 
 void add_block(Blockchain blockchain, Transactions *transaction_list) {
-    Block block = create_block(blockchain->nb_blocs, getHash(blockchain->block_list[blockchain->nb_blocs-1]), transaction_list);
-    int difficulte = blockchain->difficulty;
-    if (getIndex(block) != 0) {
-        find_good_hash(block, difficulte);
+    printf("gougaga1");
+    if(blockchain->nb_blocs != blockchain->max_size) {
+        printf("gougaga2");
+        Block block = create_block(blockchain->nb_blocs, getHash(blockchain->block_list[blockchain->nb_blocs - 1]),
+                                   transaction_list);
+        printf("gougaga2bis");
+        if (getIndex(block) != 0) {
+            find_good_hash(block, blockchain->difficulty);
+        }
+        printf("gougaga3");
+        blockchain->block_list[blockchain->nb_blocs] = block;
+        printf("gougaga4");
+        blockchain->nb_blocs += 1;
+        printf("gougaga5");
     }
-    blockchain->block_list[blockchain->nb_blocs] = block;
-    blockchain->nb_blocs += 1;
 }
 
 void delete_blockchain(Blockchain blockchain) {
@@ -86,6 +99,10 @@ void delete_blockchain(Blockchain blockchain) {
 /* FOR DEBUG PURPOSE */
 int getDifficulty(Blockchain blockchain) {
     return blockchain->difficulty;
+}
+
+int getMax_size(Blockchain blockchain) {
+    return blockchain->max_size;
 }
 
 int getNb_blocs(Blockchain blockchain) {

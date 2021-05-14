@@ -2,15 +2,17 @@
 #include "test.h"
 
 int main(void) {
-    
-    Blockchain bc = create_blockchain();
+    int difficulty = 4;
+    int max_blocks = 2;
+
+    Blockchain bc = create_blockchain(difficulty, max_blocks);
 
     /* BLOCKCHAIN INITIALISATION VERIFICATION */
     printf("* ==== INITIALISATION BLOCKCHAIN ==== *\n");
 
     int check_difficulty_1 = getDifficulty(bc);
-    if(check_difficulty_1 != 4) {
-        printf("[%sKO%s] : Blockchain difficulty is incorrect ||| more => Blockchain.difficulty : %d != difficulty : %d\n", RED, NRM, check_difficulty_1, 4);
+    if(check_difficulty_1 != difficulty) {
+        printf("[%sKO%s] : Blockchain difficulty is incorrect ||| more => Blockchain.difficulty : %d != difficulty : %d\n", RED, NRM, check_difficulty_1, difficulty);
     } else {
         printf("[%sOK%s] : Blockchain difficulty is correct\n", GRN, NRM);
     }
@@ -83,13 +85,15 @@ int main(void) {
     char prev_hash_2[SHA256_BLOCK_SIZE*2 + 1] = "0";
     strcpy(prev_hash_2, hash_1);
 
-    add_block(bc, &trans_list_2);
-
+    printf("shesssh1\n");
+    //add_block(bc, &trans_list_2);
+    printf("shesssh2\n");
     Block b2 = block_list[1];
+    printf("shesssh3\n");
 
     int check_difficulty_2 = getDifficulty(bc);
-    if(check_difficulty_2 != 4) {
-        printf("[%sKO%s] : Blockchain difficulty is incorrect ||| more => Blockchain.difficulty : %d != difficulty : %d\n", RED, NRM, check_difficulty_2, 4);
+    if(check_difficulty_2 != difficulty) {
+        printf("[%sKO%s] : Blockchain difficulty is incorrect ||| more => Blockchain.difficulty : %d != difficulty : %d\n", RED, NRM, check_difficulty_2, difficulty);
     } else {
         printf("[%sOK%s] : Blockchain difficulty is correct\n", GRN, NRM);
     }

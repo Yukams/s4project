@@ -25,7 +25,7 @@ char * getTimeStamp() {
 
 void create_hash(Block b) {
     // Constructs a string from each of transaction's string
-    char string[MAX_STRING_LENGTH * MAX_TRANS];
+    char string[MAX_STRING_LENGTH * MAX_TRANS] = "";
     for(int i = 0; i < getNb_trans(*b->transaction_list); i++) {
         char trans_string[MAX_STRING_LENGTH];
         strcpy(trans_string, getTransactionString(*b->transaction_list, i));
@@ -54,9 +54,8 @@ void delete_block(Block block) {
 
 
 void calcul_hash_root(Block b) {
-
     int nb_trans = getNb_trans(getTrans_list(b));
-    if (nb_trans==0){
+    if (nb_trans==0) {
         strcpy(b->hash_root,"0");
         return;
     }
@@ -67,18 +66,14 @@ void calcul_hash_root(Block b) {
 
 
     // Calcul of hash for each transactions
-    for (int i = 0; i < nb_trans; i++)
-    {
-        
+    for (int i = 0; i < nb_trans; i++) {
         int bufferSize = SHA256_BLOCK_SIZE;
         char hashRes[bufferSize*2 + 1]; // contiendra le hash de la transaction i en hexadécimal
         char item[200 + 140 * MAX_TRANS]; // contiendra la transaction i à hasher
-        
-        
+
         // char * string=getString(trans); // string de la transaction i 
         char * string=getTransactionString(*b->transaction_list, i);
-        
-        //printf("trans %s\n",getString(trans));    // test pour voir les transactions
+
         strcpy(item, string); // c'est elle 
         
         sha256ofString((BYTE *)item, hashRes); // hashRes contient maintenant le hash de l'item (i)
@@ -117,15 +112,11 @@ void calcul_hash_root(Block b) {
                 
             }
 
-            if (i != 0)
-            {
+            /*if (i != 0) {
                 strcpy(hash_trans[i/2],hash_trans[i]);
-                
-            }
-            
+            }*/
         }
         compteur_arbre = (compteur_arbre+1)/2;
-        
     }
         else {  //si nombre de transaction ou hash intermédiaire pair
             for (int i = 0; i < compteur_arbre; i=i+2)
@@ -141,7 +132,6 @@ void calcul_hash_root(Block b) {
                 strcpy(hash_trans[i/2],hash_trans[i]);
                 
             }
-            
         }
         
         compteur_arbre = (compteur_arbre)/2;
@@ -175,7 +165,8 @@ Block create_block(int index, char* prev_hash, Transactions *transaction_list) {
 
     block->transaction_list = transaction_list;
     
-    calcul_hash_root(block);
+    //calcul_hash_root(block);
+    strcpy(block->hash_root, "0");
     
     block->nonce = 0;
 

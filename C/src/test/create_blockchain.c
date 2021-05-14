@@ -85,11 +85,8 @@ int main(void) {
     char prev_hash_2[SHA256_BLOCK_SIZE*2 + 1] = "0";
     strcpy(prev_hash_2, hash_1);
 
-    printf("shesssh1\n");
-    //add_block(bc, &trans_list_2);
-    printf("shesssh2\n");
+    add_block(bc, &trans_list_2);
     Block b2 = block_list[1];
-    printf("shesssh3\n");
 
     int check_difficulty_2 = getDifficulty(bc);
     if(check_difficulty_2 != difficulty) {
@@ -156,14 +153,13 @@ int main(void) {
     }
 
     // Hash
-    
     int nonce_2 = getNonce(b2);
     char hash_2[SHA256_BLOCK_SIZE*2 + 1];
     char *hash2 = getHash(b2);
     strcpy(hash_2, hash2);
     
     if(strncmp(hash2, "0000000000", difficulty)!=0){
-        printf("[%sKO%s] : Block hash is incorrect ||| more => Block.hash : %s do not begin with \"0000\"\n", RED, NRM, hash2);
+        printf("[%sKO%s] : Block hash is incorrect ||| more => Block.hash : %s do not begin with %d \"0\"\n", RED, NRM, hash2, difficulty);
     } else {
         printf("[%sOK%s] : Block hash %s is correct\n", GRN, NRM,hash2);
         printf("[%sOK%s] : Block nonce is now : %d\n", GRN, NRM, nonce_2);

@@ -20,6 +20,7 @@ typedef struct block_s* Block;
 /* PUBLIC */
 Block create_block(int index, char* prev_hash, Transactions *transaction_list);
 void delete_block(Block block);
+void create_hash(Block b);
 
 /* FOR DEBUG PURPOSE TRANSACTION */
 int getIndex(Block b);

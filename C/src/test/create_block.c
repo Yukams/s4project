@@ -12,7 +12,9 @@ int main(void) {
     printf("* ==== BLOCK 1 ==== *\n");
     
     Transactions trans_list_1 = create_transaction_list();
-    int nb_trans_1 = 2;
+    int nb_trans_1 = 4;
+    add_transaction(trans_list_1, "Pierre", "Paul", 0.1);
+    add_transaction(trans_list_1, "Paul", "Pierre", 1);
     add_transaction(trans_list_1, "Pierre", "Paul", 0.1);
     add_transaction(trans_list_1, "Paul", "Pierre", 1);
     int index_1 = 0;
@@ -62,7 +64,7 @@ int main(void) {
         printf("[%sOK%s] : Block nonce is correct\n", GRN, NRM);
     }
 
-    /* Hash root */
+    // Hash root
     char * check_hash_root_1 = getHash_root(b1);
     if(strcmp(check_hash_root_1, getHash_root(b1)) != 0) {
         printf("[%sKO%s] : Block hash_root is incorrect ||| more => Block.hash_root : %s != hash_root : %s\n", RED, NRM, check_hash_root_1, getHash_root(b1));
@@ -70,7 +72,7 @@ int main(void) {
         printf("[%sOK%s] : Block hash_root %s is correct\n", GRN, NRM, check_hash_root_1);
     }
 
-    /* Hash */
+    // Hash
     char hash_1[SHA256_BLOCK_SIZE*2 + 1];
     char *hash = getHash(b1);
     strcpy(hash_1, hash);
@@ -85,7 +87,7 @@ int main(void) {
     add_transaction(trans_list_2, "Remi", "Louis", 2);
     add_transaction(trans_list_2, "Louis", "Denis", 0.0005);
     int index_2 = 1;
-    char prev_hash_2[SHA256_BLOCK_SIZE*2 + 1] = "0";
+    char prev_hash_2[SHA256_BLOCK_SIZE*2 + 1];
     strcpy(prev_hash_2, hash_1);
 
     Block b2 = create_block(index_2, prev_hash_2, &trans_list_2);

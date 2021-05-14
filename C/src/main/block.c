@@ -52,46 +52,6 @@ void delete_block(Block block) {
     free(block);
 }
 
-void calcul_hash(Block b) {
-    // Constructs a string from each of transaction's string
-    char string[MAX_STRING_LENGTH * MAX_TRANS];
-    int nb_trans =getNb_trans(*(b->transaction_list));
-
-    for(int i = 0; i < nb_trans; i++) {
-        char *trans_string = getTransactionString(*(b->transaction_list), i);
-        strcat(string, trans_string);
-    }
-
-    char hashString[200 + 140 * MAX_TRANS] = "";
-
-    // Builds the whole string
-    sprintf(hashString, "%d %s %s %s %d %d %s",b->index ,b->timestamp,b->prev_hash,b->hash_root,b->nonce,nb_trans, string);
-
-    // Transforms into SHA256 string
-    int bufferSize = SHA256_BLOCK_SIZE;
-    char hashRes[bufferSize*2 + 1]; // contiendra le hash en hexadécimal
-    char item[200 + 140 * MAX_TRANS]; // contiendra la chaîne à hasher
-    
-    strcpy(item, hashString); // c'est elle 
-    sha256ofString((BYTE *)item, hashRes); // hashRes contient maintenant le hash de l'item
-    strcpy(b->hash, hashRes);
-}
-
-void find_good_hash (Block b) {
-    
-    //vérification du hash
-    char* chaine= b->hash;
-
-    if(strncmp(chaine, "0000", 4)!=0){   //le hash ne convient pas
-        while (strncmp(chaine, "0000",4)!=0)
-        {
-            b->nonce++;
-            calcul_hash(b); 
-            chaine=b->hash;
-        }
-    }
-   
-}
 
 void calcul_hash_root(Block b) {
 
@@ -194,10 +154,6 @@ Block create_block(int index, char* prev_hash, Transactions *transaction_list) {
     block->nonce = 0;
 
     create_hash(block);
-
-    if (index != 0) {
-        find_good_hash(block);
-    }
 
     return block;
 }

@@ -132,20 +132,11 @@ int main(void) {
         printf("[%sOK%s] : Block hash_root %s is correct\n", GRN, NRM, check_hash_root_2);
     }
 
-    // Hash
-    
-    int nonce_2 = getNonce(b2);
+    /* Hash */
     char hash_2[SHA256_BLOCK_SIZE*2 + 1];
     char *hash2 = getHash(b2);
     strcpy(hash_2, hash2);
-
-    
-    if(strncmp(hash2, "0000", 4)!=0){
-        printf("[%sKO%s] : Block hash is incorrect ||| more => Block.hash : %s do not begin with \"0000\"\n", RED, NRM, hash2);
-    } else {
-        printf("[%sOK%s] : Block hash %s is correct\n", GRN, NRM,hash2);
-        printf("[%sOK%s] : Block nonce is now : %d\n", GRN, NRM, nonce_2);
-    }
+    printf("[%sOK%s] : Block hash %s\n", GRN, NRM, hash_2);
 
 
     delete_block(b1);

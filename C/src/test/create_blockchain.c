@@ -157,9 +157,9 @@ int main(void) {
     char hash_2[SHA256_BLOCK_SIZE*2 + 1];
     char *hash2 = getHash(b2);
     strcpy(hash_2, hash2);
-
+    int difficulte= getDifficulty(bc);
     
-    if(strncmp(hash2, "0000", 4)!=0){
+    if(strncmp(hash2, "0000000000", difficulte)!=0){
         printf("[%sKO%s] : Block hash is incorrect ||| more => Block.hash : %s do not begin with \"0000\"\n", RED, NRM, hash2);
     } else {
         printf("[%sOK%s] : Block hash %s is correct\n", GRN, NRM,hash2);

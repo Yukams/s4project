@@ -2,6 +2,7 @@ CC  = gcc
 SYS = -Wall -pedantic -DUNIX
 INC = -I.
 
+
 MAINDIR = src/main
 TESTDIR = src/test
 UTILDIR = utils/C_Packages/Sha256
@@ -34,9 +35,22 @@ CHAIN_DEP = $(BLOCK_DEP) $(CHAIN_C)
 CHAIN_ALL = $(CHAIN_DEP) $(CHAIN_MAIN)
 
 
+# COINBASE
+COIN_C = coinbase.o
+
+COIN_DEP = $(CHAIN_DEP) $(COIN_C)
+# MAIN
+MAIN_C = main.o
+
+MAIN_ALL = $(COIN_DEP) $(MAIN_C)
+
+
+
+
 
 # TESTS Transaction
 # ------------------------------------------------------------
+
 transaction: $(TRANS_ALL)
 	$(CC) -o $(BINDIR)/transaction $(TRANS_ALL)
 	mv *.o $(OBJDIR)/
@@ -49,6 +63,9 @@ chain: $(CHAIN_ALL)
 	$(CC) -o $(BINDIR)/chain $(CHAIN_ALL)
 	mv *.o $(OBJDIR)/
 	
+main: $(MAIN_ALL)
+	$(CC) -o $(BINDIR)/main $^
+	mv *.o $(OBJDIR)/
 
 %.o: $(TESTDIR)/%.c
 	$(CC) -o $@ -c $< $(SYS) $(INC)

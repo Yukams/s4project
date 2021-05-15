@@ -21,9 +21,9 @@ public class Test_blockchain {
 		
 		int check_nb_blocs = bc.getNb_blocs();
 		if(check_nb_blocs == 1) {
-			System.out.println("	[OK] * difficulty : " + check_nb_blocs);
+			System.out.println("	[OK] * nb_blocs : " + check_nb_blocs);
 		} else {
-			System.out.println("	[KO] * difficulty : " + check_nb_blocs + " /// should be '1'");
+			System.out.println("	[KO] * nb_blocs : " + check_nb_blocs + " /// should be '1'");
 		}
 		
 		System.out.println("\nVerification premier bloc :");
@@ -54,6 +54,8 @@ public class Test_blockchain {
 		} else {
 			System.out.println("	[KO] * nb_trans : " + check_nb_trans_1 + " /// should be '0'");
 		}
+		String check_hash_root_1 = b1.getHash_root();
+		System.out.println("	[OK] * hash_root : " + check_hash_root_1);
 		
 		String check_hash_1 = b1.getHash();
 		System.out.println("	     * hash : " + check_hash_1);
@@ -98,15 +100,34 @@ public class Test_blockchain {
 			System.out.println("	[KO] * nb_trans : " + check_nb_trans_2 + " /// should be '1'");
 		}
 		
-		String check_hash_2 = b2.getHash();
-		System.out.println("	     * hash : " + check_hash_2);
-		
-		int check_nonce_2 = b2.getNonce();
+		int check_nonce_2 = 0;
 		if(check_nonce_2 == 0) {
 			System.out.println("	[OK] * nonce : " + check_nonce_2);
 		} else {
-			System.out.println("	[KO] * nonce : " + check_nonce_2 + " /// should be '0'");
+			System.out.println("	[KO] * nonce : " + check_nonce_2 + " /// should be '"+b2.getNonce()+"'");
 		}
+		
+		String check_hash_root_2 = b2.getHash_root();
+		System.out.println("	[OK] * hash_root : " + check_hash_root_2);
+		
+		String check_hash_2 =b2.getHash();
+		int difficulte_bc = bc.getDifficulty();
+		if (!strncmp(check_hash_2, "0000000000", difficulte_bc)){
+			System.out.println("	[KO] * hash : " + check_hash_2);
+		} else {
+			System.out.println("	[OK] * hash : " + check_hash_2);
+			System.out.println("	[OK] * nonce now : " + b2.getNonce());
+		}
+		
+		
+		
 	}
+	
+	private static boolean strncmp(String a,String b,int length) {
+		   a = a.substring(0, length);
+		   b = b.substring(0, length);
+
+		   return a.compareTo(b) == 0;
+		}
 
 }

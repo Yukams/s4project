@@ -20,8 +20,8 @@ public class Block {
 		this.prev_hash = prev_hash;
 		this.nb_trans = trans_list.getNb_trans();
 		this.trans_list = trans_list;
-		this.hash_root = null;
-		this.hash = createHash();
+		this.setHash_root(calcul_hash_root());
+		this.setHash(createHash());
 		this.nonce = 0;
 	}
 	
@@ -31,7 +31,7 @@ public class Block {
 		return dtf.format(now);
 	}
 	
-	private String createHash() {
+	protected String createHash() {
 		String string = "";
 		for(int i = 0; i < nb_trans ; i++) {
 			string = string + trans_list.getTrans_list()[i];
@@ -39,6 +39,57 @@ public class Block {
 		return HashUtil.applySha256(index + timestamp + prev_hash + hash_root + nonce + nb_trans + string);
 	}
 	
+	
+	
+	private String calcul_hash_root() {
+		if (this.nb_trans == 0) {
+			
+			return "0";
+		}
+		String [] hash_trans= new String [10];
+		int compteur_arbre = this.nb_trans;
+		
+		String hashRes;
+		String transaction;
+		for(int i = 0; i < nb_trans ; i++) {
+			transaction = "" + trans_list.getTrans_list()[i];
+			hashRes = HashUtil.applySha256(transaction);
+			hash_trans[i]=hashRes;
+		}
+		
+		while (compteur_arbre != 1) {
+			if (compteur_arbre % 2 != 0) {
+				for (int i = 0; i < compteur_arbre; i=i+2) {
+					if (i == compteur_arbre) {
+						hash_trans[i]=hash_trans[i]+hash_trans[i];
+					} else {
+						hash_trans[i]=hash_trans[i]+hash_trans[i+1];
+					}
+					if (i != 0) {
+						hash_trans[i/2]=hash_trans[i];
+					}
+				}
+				compteur_arbre= (compteur_arbre+1)/2;
+			}
+			
+			else {
+				for (int i = 0; i < compteur_arbre; i=i+2) {
+	                
+	                hash_trans[i]=hash_trans[i]+hash_trans[i+1];
+	                
+	                if (i != 0) {
+	                    
+	                    hash_trans[i/2]=hash_trans[i];
+	                }
+	        }
+	        compteur_arbre = (compteur_arbre)/2;
+			}
+		}
+		String hashFinal;
+		hashFinal=HashUtil.applySha256(hash_trans[0]);
+		return hashFinal;
+		
+	}
 	
 	/**
 	 * @return the timestamp
@@ -96,6 +147,18 @@ public class Block {
 	 */
 	public int getNonce() {
 		return nonce;
+	}
+	
+	public void incrementNonce() {
+		this.nonce = this.nonce+1;
+	}
+
+	public void setHash(String hash) {
+		this.hash = hash;
+	}
+	
+	public void setHash_root(String hash) {
+		this.hash_root = hash;
 	}
 
 }

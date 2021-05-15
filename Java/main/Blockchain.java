@@ -12,9 +12,40 @@ public class Blockchain {
 		
 		addGenesisBlock();
 	}
+	
+	private boolean strncmp(String a,String b,int length) {
+		   a = a.substring(0, length);
+		   b = b.substring(0, length);
 
+		   return a.compareTo(b) == 0;
+		}
+	
+	
+	
+	private Block find_good_hash (Block b, int difficulte) {
+		String chaine = b.getHash();
+		
+		if (!strncmp(chaine, "0000000000", difficulte)) {
+			
+			while (!strncmp(chaine, "0000000000", difficulte)) {
+				
+				b.incrementNonce();
+				
+				b.setHash(b.createHash());
+				
+				chaine =b.getHash();
+			}
+		}
+		return b;
+	}
+	
 	public void addBlock(Transactions trans_list) {
-		this.block_list[this.nb_blocs] = new Block(this.nb_blocs, this.block_list[this.nb_blocs-1].getHash(), trans_list);
+		Block block = new Block(this.nb_blocs, this.block_list[this.nb_blocs-1].getHash(), trans_list);
+		int difficulte = this.difficulty;
+		
+		block = find_good_hash(block, difficulte);
+		
+		this.block_list[this.nb_blocs] = block;
 		this.nb_blocs++;
 	}
 	

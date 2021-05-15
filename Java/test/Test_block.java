@@ -62,15 +62,15 @@ public class Test_block {
 			}
 		}
 		
+		String check_hash_root_1 = b1.getHash_root();
+		System.out.println("	     * hash_root : " + check_hash_root_1);
+		
 		String check_hash_1 = b1.getHash();
 		System.out.println("	     * hash : " + check_hash_1);
 		
 		int check_nonce_1 = b1.getNonce();
-		if(check_nonce_1 == 0) {
-			System.out.println("	[OK] * nonce : " + check_nonce_1);
-		} else {
-			System.out.println("	[KO] * nonce : " + check_nonce_1 + " /// should be '0'");
-		}
+		System.out.println("	     * nonce now : " + check_nonce_1);
+		
 		
 		
 		System.out.println("\n\nBlock 2 :");
@@ -124,15 +124,14 @@ public class Test_block {
 			}
 		}
 		
+		String check_hash_root_2 = b2.getHash_root();
+		System.out.println("	     * hash_root : " + check_hash_root_2);
+		
 		String check_hash_2 = b2.getHash();
 		System.out.println("	     * hash : " + check_hash_2);
 		
 		int check_nonce_2 = b2.getNonce();
-		if(check_nonce_1 == 0) {
-			System.out.println("	[OK] * nonce : " + check_nonce_2);
-		} else {
-			System.out.println("	[KO] * nonce : " + check_nonce_2 + " /// should be '0'");
-		}
+		System.out.println("	     * nonce now : " + check_nonce_2);
 	}
 
 }

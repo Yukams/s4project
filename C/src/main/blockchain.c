@@ -21,6 +21,7 @@ Blockchain create_blockchain(int difficulty, int max_size) {
         printf("\n*** Error : malloc blockchain ***\n");
     }
     blockchain->difficulty = difficulty;
+    blockchain->max_size = max_size;
     blockchain->block_list[0] = genesis;
     blockchain->nb_blocs = 1;
     return blockchain;

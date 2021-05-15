@@ -7,7 +7,7 @@ struct block_s {
     int index; // numéro du block dans la chaîne (le génésis est numéroté zéro)
     char timestamp[DATE_LONG]; // la date au moment de la création
     char prev_hash[SHA256_BLOCK_SIZE*2 + 1]; // hash du block précédent dans la chaîne
-    Transactions *transaction_list; // liste des transactions
+    Transactions transaction_list; // liste des transactions
     char hash_root[SHA256_BLOCK_SIZE*2 + 1]; // hash root de l’arbre de Merkle des transactions
     char hash[SHA256_BLOCK_SIZE*2 + 1]; // hash du block courant
     int nonce; //
@@ -26,16 +26,16 @@ char * getTimeStamp() {
 void create_hash(Block b) {
     // Constructs a string from each of transaction's string
     char string[MAX_STRING_LENGTH * MAX_TRANS] = "";
-    for(int i = 0; i < getNb_trans(*b->transaction_list); i++) {
+    for(int i = 0; i < getNb_trans(b->transaction_list); i++) {
         char trans_string[MAX_STRING_LENGTH];
-        strcpy(trans_string, getTransactionString(*b->transaction_list, i));
+        strcpy(trans_string, getTransactionString(b->transaction_list, i));
         strcat(string, trans_string);
     }
 
     char hashString[200 + 140 * MAX_TRANS];
 
     // Builds the whole string
-    sprintf(hashString, "%d %s %s %s %d %d %s", b->index, b->timestamp, b->prev_hash, b->hash_root, b->nonce, getNb_trans(*b->transaction_list), string);
+    sprintf(hashString, "%d %s %s %s %d %d %s", b->index, b->timestamp, b->prev_hash, b->hash_root, b->nonce, getNb_trans(b->transaction_list), string);
 
     // Transforms into SHA256 string
     char hashRes[200 + 140 * MAX_TRANS];
@@ -47,7 +47,7 @@ void create_hash(Block b) {
 }
 
 void delete_block(Block block) {
-    delete_transaction_list(*block->transaction_list);
+    delete_transaction_list(block->transaction_list);
 
     free(block);
 }
@@ -68,7 +68,7 @@ void calcul_hash_root(Block b) {
         char hashRes[bufferSize*2 + 1]; // contiendra le hash de la transaction i en hexadécimal
         char item[200 + 140 * MAX_TRANS]; // contiendra la transaction i à hasher
 
-        char * string = getTransactionString(*b->transaction_list, i); // string de la transaction i
+        char * string = getTransactionString(b->transaction_list, i); // string de la transaction i
         strcpy(item, string); // c'est elle
         sha256ofString((BYTE *)item, hashRes); // hashRes contient maintenant le hash de l'item (i)
         sprintf(hash_trans[i], "%s", hashRes);
@@ -118,7 +118,7 @@ Block create_block(int index, char* prev_hash, Transactions *transaction_list) {
 
     strcpy(block->prev_hash, prev_hash);
 
-    block->transaction_list = transaction_list;
+    block->transaction_list = *transaction_list;
     
     calcul_hash_root(block);
     
@@ -139,7 +139,7 @@ char * getPrev_hash(Block b) {
 }
 
 Transactions getTrans_list(Block b){
-    return *(b->transaction_list);
+    return b->transaction_list;
 }
 
 char * getHash_root(Block b) {

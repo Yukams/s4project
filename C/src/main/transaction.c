@@ -37,6 +37,10 @@ TransactionUnit create_transaction() {
     return transaction;
 }
 
+void init_transaction_genesis(TransactionUnit transaction) {
+    sprintf(transaction->string, "Genesis");
+}
+
 void init_transaction(TransactionUnit transaction, char * source, char * destination, double value) {
     strcpy(transaction->destination, destination);
     strcpy(transaction->source, source);
@@ -57,6 +61,13 @@ long int toSatoBnb(double value) {
 double fromSatoBnb(long int value) {
     double new_value = value * pow(10,-8);
     return new_value;
+}
+
+void add_transaction_genesis(Transactions transaction_list) {
+    TransactionUnit transaction = create_transaction();
+    init_transaction_genesis(transaction);
+    transaction_list->trans_list[transaction_list->nb_trans] = transaction;
+    transaction_list->nb_trans += 1;
 }
 
 void delete_transaction_list(Transactions transaction_list) {

@@ -19,6 +19,7 @@ long int toSatoBnb(double value);
 double fromSatoBnb(long int value);
 void delete_transaction_list(Transactions transaction_list);
 Transactions create_transaction_list();
+void add_transaction_genesis(Transactions transactions_list);
 void add_transaction(Transactions transaction_list, char * source, char * destination, double value);
 int getNb_trans(Transactions transaction_list);
 char * getTrans_listStrings(Transactions transaction_list, int indice);

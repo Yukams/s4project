@@ -30,8 +30,8 @@ int main(void) {
 
     // Nombre transaction
     int check_nb_trans_1 = getNb_trans(getTrans_list(b1));
-    if(check_nb_trans_1 != 0) {
-        printf("[%sKO%s] : Blockchain nb_trans is incorrect ||| more => Blockchain.nb_trans : %d != nb_trans : %d\n", RED, NRM, check_nb_trans_1, 0);
+    if(check_nb_trans_1 != 1) {
+        printf("[%sKO%s] : Blockchain nb_trans is incorrect ||| more => Blockchain.nb_trans : %d != nb_trans : %d\n", RED, NRM, check_nb_trans_1, 1);
     } else {
         printf("[%sOK%s] : Blockchain nb_trans is correct\n", GRN, NRM);
     }

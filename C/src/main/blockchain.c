@@ -11,6 +11,7 @@ struct blockchain_s {
 /* PUBLIC */
 Blockchain create_blockchain(int difficulty, int max_size) {
     Transactions tList = create_transaction_list();
+    add_transaction_genesis(tList);
     
     Block genesis = create_block(0, "0", &tList);
 

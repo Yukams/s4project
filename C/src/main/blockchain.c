@@ -15,14 +15,21 @@ Blockchain create_blockchain(int difficulty, int max_size) {
     Block genesis = create_block(0, "0", &tList);
 
     Blockchain blockchain = malloc(sizeof(struct blockchain_s));
-    blockchain->block_list = malloc(max_size * sizeof(Block));
+    
     if(blockchain == NULL) {
         printf("\n*** Error : malloc blockchain ***\n");
+    }
+    blockchain->block_list = malloc(max_size * sizeof(Block));
+    
+    if(blockchain->block_list == NULL) {
+        printf("\n*** Error : malloc blockchain_blocklist ***\n");
     }
     blockchain->difficulty = difficulty;
     blockchain->max_size = max_size;
     blockchain->block_list[0] = genesis;
     blockchain->nb_blocs = 1;
+    
+    //printf("%lu\n",sizeof(genesis));
     return blockchain;
 }
 
@@ -54,6 +61,13 @@ void add_block(Blockchain blockchain, Transactions *transaction_list) {
 }
 
 void delete_blockchain(Blockchain blockchain) {
+    
+    for (int i = 0; i < blockchain->nb_blocs; i++)
+    {
+        delete_block(blockchain->block_list[i]);
+    }
+    free(blockchain->block_list);
+    
     free(blockchain);
 }
 

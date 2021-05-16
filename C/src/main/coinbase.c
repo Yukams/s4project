@@ -205,8 +205,12 @@ void phase_marche(Coinbase coinbase){
 }
 
 void copie_transaction_list(Transactions transList1, Transactions transList2,int indexTrans){
-    char *source = getTransactionSource(transList1,indexTrans);
-    char *destination = getTransactionDestination(transList1,indexTrans);
+    char source[MAX_STRING_LENGTH+1];
+    strcpy(source,getTransactionSource(transList1,indexTrans));
+    
+    char destination[MAX_STRING_LENGTH+1];
+    strcpy(destination,getTransactionDestination(transList1,indexTrans));
+    
     double value = getTransactionBnbValue(transList1,indexTrans);
     /*==============COPIE DES DATA RECUP A LA LISTE DE TRANSACTION CIBLE==============*/
     add_transaction(transList2,source,destination,value);

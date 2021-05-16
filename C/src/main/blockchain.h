@@ -11,6 +11,7 @@ Blockchain create_blockchain(int difficulty, int max_size);
 void delete_blockchain(Blockchain blockchain);
 void add_block(Blockchain blockchain, Transactions *transaction_list);
 
+
 /* FOR DEBUG PURPOSE */
 int getDifficulty(Blockchain blockchain);
 int getNb_blocs(Blockchain blockchain);

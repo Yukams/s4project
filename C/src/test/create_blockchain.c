@@ -2,7 +2,7 @@
 #include "test.h"
 
 int main(void) {
-    int difficulty = 4;
+    int difficulty = 3;
     int max_blocks = 2;
 
     Blockchain bc = create_blockchain(difficulty, max_blocks);
@@ -166,7 +166,7 @@ int main(void) {
     }
 
     delete_blockchain(bc);
-    delete_transaction_list(trans_list_2);
+    
 
     return 0;
 }

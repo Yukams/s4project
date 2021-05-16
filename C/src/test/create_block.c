@@ -125,7 +125,7 @@ int main(void) {
     } else {
         printf("[%sOK%s] : Block nonce is correct\n", GRN, NRM);
     }
-/*
+
     // Hash root
     char * check_hash_root_2 = getHash_root(b2);
     if(strcmp(check_hash_root_2, getHash_root(b2)) != 0) {
@@ -133,7 +133,7 @@ int main(void) {
     } else {
         printf("[%sOK%s] : Block hash_root %s is correct\n", GRN, NRM, check_hash_root_2);
     }
-*/
+
     // Hash
     char hash_2[SHA256_BLOCK_SIZE*2 + 1];
     char *hash2 = getHash(b2);

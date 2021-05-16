@@ -184,7 +184,7 @@ void phase_marche(Coinbase coinbase){
     nbTransaction = randMinMax(1,nbBlockReste); // entre une transaction minimum et Nombre de block restant / 2
     for(int i=0; i<nbTransaction; i++){
         transaction_list = create_transaction_list();
-        nbTransactionBlock = randMinMax(1,MAX_TRANS-2);                                                         //RECHANGER EN MAX_TRANS
+        nbTransactionBlock =  randMinMax(1,MAX_TRANS);                                                         //RECHANGER EN MAX_TRANS
         
         for(int j=0; j<nbTransactionBlock;j++){
             randTX1 = randIntMax(get_nb_user(get_DB_from_CB(coinbase)));
@@ -200,7 +200,7 @@ void phase_marche(Coinbase coinbase){
         add_block(blockchain,&transaction_list);
         
     }
-    set_super_list(coinbase);
+    //set_super_list(coinbase);
 }
 
 void copie_transaction_list(Transactions transList1, Transactions transList2,int indexTrans){

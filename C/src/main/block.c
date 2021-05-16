@@ -62,6 +62,12 @@ void calcul_hash_root(Block b) {
     char hash_trans[MAX_TRANS][10*SHA256_BLOCK_SIZE+1]; //tableau de chaine de caractere de chaque transaction
     int compteur_arbre = nb_trans;
 
+    for (int i = 0; i < MAX_TRANS; i++)
+    {
+        strcpy(hash_trans[i],"");
+    }
+    
+
     // Calcul of hash for each transactions
     for (int i = 0; i < nb_trans; i++) {
         int bufferSize = SHA256_BLOCK_SIZE;
@@ -78,10 +84,14 @@ void calcul_hash_root(Block b) {
         if (compteur_arbre % 2 != 0) { //si nombre de transaction ou hash intermédiaire impair
             for (int i = 0; i < compteur_arbre+1; i = i+2) {
                 if (i == compteur_arbre) {
+                    char * hash_transi=hash_trans[i];
                     char * hash_trans_double = hash_trans[i];
-                    strcat(hash_trans[i], hash_trans_double);
+                    //strcat(hash_trans[i], hash_trans_double);
+                    sprintf(hash_trans[i],"%s%s",hash_transi, hash_trans_double);
                 } else {
-                    strcat(hash_trans[i],hash_trans[i+1]);
+                    char * hash_transi=hash_trans[i];
+                    //strcat(hash_trans[i],hash_trans[i+1]);
+                    sprintf(hash_trans[i],"%s%s",hash_transi, hash_trans[i+1]);
                 }
                 if (i != 0) {
                     strcpy(hash_trans[i/2],hash_trans[i]);
@@ -90,7 +100,9 @@ void calcul_hash_root(Block b) {
         compteur_arbre = (compteur_arbre+1)/2;
     } else {  //si nombre de transaction ou hash intermédiaire pair
             for (int i = 0; i < compteur_arbre; i=i+2) {
-                strcat(hash_trans[i],hash_trans[i+1]);
+                char * hash_transi=hash_trans[i];
+                //strcat(hash_trans[i],hash_trans[i+1]);
+                sprintf(hash_trans[i],"%s%s",hash_transi, hash_trans[i+1]);
                 if (i != 0) {
                     strcpy(hash_trans[i/2],hash_trans[i]);
                 }

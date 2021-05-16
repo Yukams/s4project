@@ -33,7 +33,6 @@ void delete_coinbase(Coinbase coinbase);
 Blockchain get_blockchain_from_CB(Coinbase coinbase);
 UserDB get_DB_from_CB(Coinbase Coinbase);
 UserUnit get_user_from_CB(Coinbase coinbase, int index);
-Transactions get_trans_list_from_global(Coinbase coinbase,int index);
 double get_masse_monetaire(Coinbase coinbase);
 
 //User

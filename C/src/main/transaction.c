@@ -18,17 +18,22 @@ struct transactions_s {
 /*GLOBAL*/
 struct transactions_list_global_s{
     int nb_transListe;
+    int index_FIFO_trans; //quel transaction on est
+    int index_FIFO_tl;//quel liste on est
     Transactions *super_liste;
 };
 /*==================================================================*/
 /* FUNCTIONS */
 /*GLOBAL*/
 TransactionsGlob create_transaction_global(int taille) {
-    TransactionsGlob super_liste = malloc(taille*sizeof(struct transactions_s));
+    TransactionsGlob super_liste = malloc(sizeof(struct transactions_list_global_s));
+    super_liste->super_liste = malloc(taille*sizeof(struct transactions_s));
     if(super_liste == NULL){
-        printf("\n*** Error : malloc transaction ***\n");
+        printf("\n*** Error : malloc transaction global ***\n");
     }
     super_liste->nb_transListe = 0;
+    super_liste->index_FIFO_tl = 0;
+    super_liste->index_FIFO_trans = 0;
     return super_liste;
 }
 
@@ -37,6 +42,24 @@ void add_transaction_global(TransactionsGlob super_liste, Transactions transacti
     super_liste->nb_transListe+=1;
 }
 
+int get_index_fifo_tl(TransactionsGlob super_liste){
+    return super_liste->index_FIFO_tl;
+}
+
+int get_index_fifo_trans(TransactionsGlob super_liste){
+    return super_liste->index_FIFO_trans;
+}
+
+void incr_index_fifo_tl(TransactionsGlob super_liste){
+    super_liste->index_FIFO_tl++;
+}
+
+void incr_index_fifo_trans(TransactionsGlob super_liste){
+    super_liste->index_FIFO_trans++;
+}
+void reset_index_fifo_trans(TransactionsGlob super_liste){
+    super_liste->index_FIFO_trans = 0;
+}
 void remove_global(TransactionsGlob super_liste){
     free(super_liste);
 }

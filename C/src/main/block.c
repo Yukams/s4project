@@ -86,11 +86,9 @@ void calcul_hash_root(Block b) {
                 if (i == compteur_arbre) {
                     char * hash_transi=hash_trans[i];
                     char * hash_trans_double = hash_trans[i];
-                    //strcat(hash_trans[i], hash_trans_double);
                     sprintf(hash_trans[i],"%s%s",hash_transi, hash_trans_double);
                 } else {
                     char * hash_transi=hash_trans[i];
-                    //strcat(hash_trans[i],hash_trans[i+1]);
                     sprintf(hash_trans[i],"%s%s",hash_transi, hash_trans[i+1]);
                 }
                 if (i != 0) {
@@ -101,7 +99,6 @@ void calcul_hash_root(Block b) {
     } else {  //si nombre de transaction ou hash intermédiaire pair
             for (int i = 0; i < compteur_arbre; i=i+2) {
                 char * hash_transi=hash_trans[i];
-                //strcat(hash_trans[i],hash_trans[i+1]);
                 sprintf(hash_trans[i],"%s%s",hash_transi, hash_trans[i+1]);
                 if (i != 0) {
                     strcpy(hash_trans[i/2],hash_trans[i]);

@@ -29,6 +29,11 @@ char * getTrans_listStrings(Transactions transaction_list, int indice);
 Transactions get_tl_from_global(TransactionsGlob super_liste, int index);
 void add_transaction_global(TransactionsGlob super_liste, Transactions transactions_list);
 void remove_global(TransactionsGlob super_liste);
+void incr_index_fifo_tl(TransactionsGlob super_liste);
+void incr_index_fifo_trans(TransactionsGlob super_liste);
+void reset_index_fifo_trans(TransactionsGlob super_liste); //reset à 0
+int get_index_fifo_trans(TransactionsGlob super_liste);
+int get_index_fifo_tl(TransactionsGlob super_liste);
 TransactionsGlob create_transaction_global(int taille);
 
 /* FOR DEBUG PURPOSE */

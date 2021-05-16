@@ -16,5 +16,6 @@ int getDifficulty(Blockchain blockchain);
 int getNb_blocs(Blockchain blockchain);
 int getMax_size(Blockchain blockchain);
 Block *getBlock_list(Blockchain blockchain);
+int getNbTransTotal(Blockchain blockchain);
 
 #endif //PROJET_BLOCKCHAIN_H

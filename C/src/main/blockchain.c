@@ -23,7 +23,6 @@ Blockchain create_blockchain(int difficulty, int max_size) {
     blockchain->max_size = max_size;
     blockchain->block_list[0] = genesis;
     blockchain->nb_blocs = 1;
-    
     return blockchain;
 }
 
@@ -47,7 +46,7 @@ void add_block(Blockchain blockchain, Transactions *transaction_list) {
         Block block = create_block(blockchain->nb_blocs, getHash(blockchain->block_list[blockchain->nb_blocs - 1]),
                                    transaction_list);
         if (getIndex(block) != 0) {
-            //find_good_hash(block, blockchain->difficulty);
+            find_good_hash(block, blockchain->difficulty);
         }
         blockchain->block_list[blockchain->nb_blocs] = block;
         blockchain->nb_blocs += 1;
@@ -74,4 +73,17 @@ int getNb_blocs(Blockchain blockchain) {
 
 Block *getBlock_list(Blockchain blockchain) {
     return blockchain->block_list;
+}
+
+int getNbTransTotal(Blockchain blockchain){ //includes genesis
+    Block b;
+    Transactions tl;
+    int TransTotal = 0,nbTransBlock;
+    for(int i = 0; i<getNb_blocs(blockchain);i++){
+        b = getBlock_list(blockchain)[i];
+        tl = getTrans_list(b);
+        nbTransBlock = getNb_trans(tl);
+        TransTotal+=nbTransBlock;
+    }
+    return TransTotal;
 }

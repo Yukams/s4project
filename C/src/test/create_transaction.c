@@ -14,7 +14,7 @@ int main(void) {
     add_transaction(transaction_list, source, destination, value);
 
     int randInt = getTransactionRandInt(transaction_list, 0); // Can't get it otherwise
-    sprintf(string, "Source user%s-Destination : user%s%d%ld", source, destination, randInt, valueSatoBnb);
+    sprintf(string, "Source user%s-Destination : user%s%d%ld", source, destination, randInt, toSatoBnb(value));
 
     /* Source */
     char* check_source = getTransactionSource(transaction_list, 0);

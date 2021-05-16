@@ -3,11 +3,12 @@
 
 /*==================================================================*/
 /* STRUCTURE */
+
 typedef struct transactionUnit_s {
         char source[MAX_NAME_LENGTH];
         char destination[MAX_NAME_LENGTH];
         int randint;
-        long int value; // En SatoBNB
+        long int value; // En BNB
         char string[MAX_STRING_LENGTH];
 } *TransactionUnit ;
 
@@ -15,16 +16,56 @@ struct transactions_s {
     int nb_trans;
     TransactionUnit trans_list[MAX_TRANS];
 };
-/*GLOBAL*/
+
 struct transactions_list_global_s{
     int nb_transListe;
     int index_FIFO_trans; //quel transaction on est
     int index_FIFO_tl;//quel liste on est
     Transactions *super_liste;
 };
+
 /*==================================================================*/
 /* FUNCTIONS */
-/*GLOBAL*/
+
+/* PRIVATE */
+
+// MISC PART
+int randInt() {
+    srand(time(NULL));
+    return rand()%MAX_RANDINT;
+}
+
+// TRANSACTION UNIT PART
+void delete_transaction(TransactionUnit transaction) {
+    free(transaction);
+}
+
+TransactionUnit create_transaction() {
+    TransactionUnit transaction = malloc(sizeof(struct transactionUnit_s));
+    if(transaction == NULL){
+        printf("\n*** Error : malloc transaction ***\n");
+    }
+    return transaction;
+}
+
+void init_transaction_genesis(TransactionUnit transaction) {
+    sprintf(transaction->string, "Genesis");
+}
+
+void init_transaction(TransactionUnit transaction, char * source, char * destination, double value) {
+    strcpy(transaction->destination, destination);
+    strcpy(transaction->source, source);
+    transaction->value = toSatoBnb(value);
+
+    transaction->randint = randInt();
+    if(transaction->randint == 0) {transaction->randint = 1;} // Il est demandé que le nombre soit au minimum 1
+
+    sprintf(transaction->string, "Source user%s-Destination : user%s%d%ld", transaction->source, transaction->destination, transaction->randint, transaction->value);
+}
+
+/* PUBLIC */
+
+// GLOBAL LIST PART
 TransactionsGlob create_transaction_global(int taille) {
     TransactionsGlob super_liste = malloc(sizeof(struct transactions_list_global_s));
     super_liste->super_liste = malloc(taille*sizeof(struct transactions_s));
@@ -67,55 +108,8 @@ void remove_global(TransactionsGlob super_liste){
 Transactions get_tl_from_global(TransactionsGlob super_liste, int index){
     return super_liste->super_liste[index];
 }
-/*==================================================================*/
 
-
-
-/* PRIVATE */
-// Transaction Unit part
-int randInt() {
-    srand(time(NULL));
-    return rand()%MAX_RANDINT;
-}
-
-void delete_transaction(TransactionUnit transaction) {
-    free(transaction);
-}
-
-TransactionUnit create_transaction() {
-    TransactionUnit transaction = malloc(sizeof(struct transactionUnit_s));
-    if(transaction == NULL){
-        printf("\n*** Error : malloc transaction ***\n");
-    }
-    return transaction;
-}
-
-void init_transaction_genesis(TransactionUnit transaction) {
-    sprintf(transaction->string, "Genesis");
-}
-
-void init_transaction(TransactionUnit transaction, char * source, char * destination, double value) {
-    strcpy(transaction->destination, destination);
-    strcpy(transaction->source, source);
-    transaction->value = toSatoBnb(value);
-
-    transaction->randint = randInt();
-    if(transaction->randint == 0) {transaction->randint = 1;} // Il est demandé que le nombre soit au minimum 1
-
-    sprintf(transaction->string, "Source user%s-Destination : user%s%d%ld", transaction->source, transaction->destination, transaction->randint, transaction->value);
-}
-
-/* PUBLIC */
-long int toSatoBnb(double value) {
-    long int new_value = value * pow(10,8);
-    return new_value;
-}
-
-double fromSatoBnb(long int value) {
-    double new_value = value * pow(10,-8);
-    return new_value;
-}
-
+// TRANSACTION LIST PART
 void add_transaction_genesis(Transactions transaction_list) {
     TransactionUnit transaction = create_transaction();
     init_transaction_genesis(transaction);
@@ -148,6 +142,7 @@ void add_transaction(Transactions transaction_list, char * source, char * destin
     transaction_list->nb_trans += 1;
 }
 
+// MISC PART
 int getNb_trans(Transactions transaction_list) {
     return transaction_list->nb_trans;
 }
@@ -156,8 +151,19 @@ char * getTrans_listStrings(Transactions transaction_list, int indice) {
     return transaction_list->trans_list[indice]->string;
 }
 
+long int toSatoBnb(double value) {
+    long int new_value = value * pow(10,8);
+    return new_value;
+}
+
+double fromSatoBnb(long int value) {
+    double new_value = value * pow(10,-8);
+    return new_value;
+}
+
 /*==================================================================*/
-/* FOR DEBUG PURPOSE */
+/* FOR DEBUG */
+
 // TRANSACTION UNIT PART
 char* getSource(TransactionUnit transaction) {
     return transaction->source;
@@ -182,8 +188,6 @@ int getRandInt(TransactionUnit transaction) {
 char* getString(TransactionUnit transaction) {
     return transaction->string;
 }
-
-
 
 // TRANSACTION LIST PART
 char* getTransactionSource(Transactions transaction_list, int indice) {

@@ -16,12 +16,12 @@ struct block_s {
 /*==================================================================*/
 /* FONCTIONS */
 
+/* PRIVATE */
 char * getTimeStamp() {
     time_t ltime;
     time(&ltime);
     return ctime(&ltime);
 }
-
 
 void create_hash(Block b) {
     // Constructs a string from each of transaction's string
@@ -46,13 +46,6 @@ void create_hash(Block b) {
     strcpy(b->hash, hashRes);
 }
 
-void delete_block(Block block) {
-    delete_transaction_list(block->transaction_list);
-
-    free(block);
-}
-
-
 void calcul_hash_root(Block b) {
     int nb_trans = getNb_trans(getTrans_list(b));
     if (nb_trans==0) {
@@ -66,7 +59,6 @@ void calcul_hash_root(Block b) {
     {
         strcpy(hash_trans[i],"");
     }
-    
 
     // Calcul of hash for each transactions
     for (int i = 0; i < nb_trans; i++) {
@@ -77,7 +69,7 @@ void calcul_hash_root(Block b) {
         char * string = getTransactionString(b->transaction_list, i); // string de la transaction i
         strcpy(item, string); // c'est elle
         sha256ofString((BYTE *)item, hashRes); // hashRes contient maintenant le hash de l'item (i)
-        
+
         sprintf(hash_trans[i], "%s", hashRes);
     }
 
@@ -89,7 +81,7 @@ void calcul_hash_root(Block b) {
                     strcpy(hash_transi,hash_trans[i]);
                     sprintf(hash_trans[i],"%s%s",hash_transi, hash_transi);
                 } else {
-                    
+
                     char hash_transi[MAX_TRANS*SHA256_BLOCK_SIZE+1];
                     strcpy(hash_transi,hash_trans[i]);
                     char hash_trans2[MAX_TRANS*SHA256_BLOCK_SIZE+1];
@@ -100,11 +92,11 @@ void calcul_hash_root(Block b) {
                     strcpy(hash_trans[i/2],hash_trans[i]);
                 }
             }
-        compteur_arbre = (compteur_arbre+1)/2;
-    } else {  //si nombre de transaction ou hash intermédiaire pair
+            compteur_arbre = (compteur_arbre+1)/2;
+        } else {  //si nombre de transaction ou hash intermédiaire pair
             for (int i = 0; i < compteur_arbre; i=i+2) {
                 char hash_transi[MAX_TRANS*SHA256_BLOCK_SIZE+1];
-                
+
                 strcpy(hash_transi,hash_trans[i]);
                 char hash_trans2[MAX_TRANS*SHA256_BLOCK_SIZE+1];
                 strcpy(hash_trans2,hash_trans[i+1]);
@@ -112,17 +104,23 @@ void calcul_hash_root(Block b) {
                 if (i != 0) {
                     strcpy(hash_trans[i/2],hash_trans[i]);
                 }
+            }
+            compteur_arbre = (compteur_arbre)/2;
         }
-        compteur_arbre = (compteur_arbre)/2;
-    }
 
     // Transforms into SHA256 string de la concaténation
     char hashRes[200 + 140 * MAX_TRANS];
     char item[200 + 140 * MAX_TRANS];
-    strcpy(item, hash_trans[0]); 
+    strcpy(item, hash_trans[0]);
     sha256ofString((BYTE *)item, hashRes); // hashRes contient maintenant le hash de l'item
-    
+
     strcpy(b->hash_root, hashRes); // hash_root qui vaut la racine de l'arbre
+}
+
+/* PUBLIC */
+void delete_block(Block block) {
+    delete_transaction_list(block->transaction_list);
+    free(block);
 }
 
 Block create_block(int index, char* prev_hash, Transactions *transaction_list) {
@@ -147,7 +145,9 @@ Block create_block(int index, char* prev_hash, Transactions *transaction_list) {
     return block;
 }
 
-/* FOR DEBUG PURPOSE */
+/*==================================================================*/
+/* FOR DEBUG */
+
 int getIndex(Block b) {
     return b->index;
 }

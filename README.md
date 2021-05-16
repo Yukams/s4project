@@ -13,7 +13,6 @@ int main(void) {
   add_block(bc, &tList);
   
   delete_blockchain(bc);
-  delete_transaction_list(tList);
   return 0;
 }
 ```

@@ -53,11 +53,9 @@ MAIN_C = main.o
 MAIN_ALL = $(DISPLAY_DEP) $(MAIN_C)
 
 
-
-
-
-# TESTS Transaction
-# ------------------------------------------------------------
+#########
+# BUILD #
+#########
 
 transaction: $(TRANS_ALL)
 	$(CC) -o $(BINDIR)/transaction $(TRANS_ALL)
@@ -70,7 +68,8 @@ block: $(BLOCK_ALL)
 chain: $(CHAIN_ALL)
 	$(CC) -o $(BINDIR)/chain $(CHAIN_ALL)
 	mv *.o $(OBJDIR)/
-	
+
+
 main: $(MAIN_ALL)
 	$(CC) -o $(BINDIR)/main $^
 	mv *.o $(OBJDIR)/

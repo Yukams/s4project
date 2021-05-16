@@ -14,17 +14,17 @@ int main(void) {
     if(check_difficulty_1 != difficulty) {
         printf("[%sKO%s] : Blockchain difficulty is incorrect ||| more => Blockchain.difficulty : %d != difficulty : %d\n", RED, NRM, check_difficulty_1, difficulty);
     } else {
-        printf("[%sOK%s] : Blockchain difficulty is correct\n", GRN, NRM);
+        printf("[%sOK%s] : Blockchain difficulty is correct %d\n", GRN, NRM, check_difficulty_1);
     }
 
     int check_nb_blocs_1 = getNb_blocs(bc);
     if(check_nb_blocs_1 != 1) {
         printf("[%sKO%s] : Blockchain nb_blocs is incorrect ||| more => Blockchain.nb_blocs : %d != nb_blocs : %d\n", RED, NRM, check_nb_blocs_1, 1);
     } else {
-        printf("[%sOK%s] : Blockchain nb_blocs is correct\n", GRN, NRM);
+        printf("[%sOK%s] : Blockchain nb_blocs is correct %d\n", GRN, NRM, check_nb_blocs_1);
     }
 
-    // Verification du bloc
+    // Verification du bloc génésis
     Block *block_list = getBlock_list(bc);
     Block b1 = block_list[0];
 
@@ -33,7 +33,7 @@ int main(void) {
     if(check_nb_trans_1 != 1) {
         printf("[%sKO%s] : Blockchain nb_trans is incorrect ||| more => Blockchain.nb_trans : %d != nb_trans : %d\n", RED, NRM, check_nb_trans_1, 1);
     } else {
-        printf("[%sOK%s] : Blockchain nb_trans is correct\n", GRN, NRM);
+        printf("[%sOK%s] : Blockchain nb_trans is correct %d\n", GRN, NRM, check_nb_trans_1);
     }
 
     // Previous hash
@@ -49,7 +49,7 @@ int main(void) {
     if(check_index_1 != 0) {
         printf("[%sKO%s] : Block index is incorrect ||| more => Block.index : %d != index : %d\n", RED, NRM, check_index_1, 0);
     } else {
-        printf("[%sOK%s] : Block index is correct\n", GRN, NRM);
+        printf("[%sOK%s] : Block index is correct %d\n", GRN, NRM, check_index_1);
     }
 
     // Nonce
@@ -57,7 +57,7 @@ int main(void) {
     if(check_nonce_1 != 0) {
         printf("[%sKO%s] : Block nonce is incorrect ||| more => Block.nonce : %d != nonce : %d\n", RED, NRM, check_nonce_1, 0);
     } else {
-        printf("[%sOK%s] : Block nonce is correct\n", GRN, NRM);
+        printf("[%sOK%s] : Block nonce is correct %d\n", GRN, NRM, check_nonce_1);
     }
 
     // Hash root
@@ -74,7 +74,6 @@ int main(void) {
     strcpy(hash_1, hash);
     printf("[%sOK%s] : Block hash %s\n", GRN, NRM, hash_1);
 
-
     // Ajout d'un block dans la blockchain
     printf("\n\n* ==== AJOUT D'UN BLOCK ==== *\n");
 
@@ -88,26 +87,28 @@ int main(void) {
     add_block(bc, &trans_list_2);
     Block b2 = block_list[1];
 
+    // Difficulté (blockchain)
     int check_difficulty_2 = getDifficulty(bc);
     if(check_difficulty_2 != difficulty) {
         printf("[%sKO%s] : Blockchain difficulty is incorrect ||| more => Blockchain.difficulty : %d != difficulty : %d\n", RED, NRM, check_difficulty_2, difficulty);
     } else {
-        printf("[%sOK%s] : Blockchain difficulty is correct\n", GRN, NRM);
+        printf("[%sOK%s] : Blockchain difficulty is correct %d\n", GRN, NRM, check_difficulty_2);
     }
 
+    // Nombre de blocs (blockchain)
     int check_nb_blocs_2 = getNb_blocs(bc);
     if(check_nb_blocs_2 != 2) {
         printf("[%sKO%s] : Blockchain nb_blocs is incorrect ||| more => Blockchain.nb_blocs : %d != nb_blocs : %d\n", RED, NRM, check_nb_blocs_2, 1);
     } else {
-        printf("[%sOK%s] : Blockchain nb_blocs is correct\n", GRN, NRM);
+        printf("[%sOK%s] : Blockchain nb_blocs is correct %d\n", GRN, NRM, check_nb_blocs_2);
     }
 
-    // Nombre transaction
+    // Nombre transactions
     int check_nb_trans_2 = getNb_trans(getTrans_list(b2));
     if(check_nb_trans_2 != 3) {
         printf("[%sKO%s] : Blockchain nb_trans is incorrect ||| more => Blockchain.nb_trans : %d != nb_trans : %d\n", RED, NRM, check_nb_trans_2, 3);
     } else {
-        printf("[%sOK%s] : Blockchain nb_trans is correct\n", GRN, NRM);
+        printf("[%sOK%s] : Blockchain nb_trans is correct %d\n", GRN, NRM, check_nb_trans_2);
     }
 
     // Transactions
@@ -133,15 +134,7 @@ int main(void) {
     if(check_index_2 != 1) {
         printf("[%sKO%s] : Block index is incorrect ||| more => Block.index : %d != index : %d\n", RED, NRM, check_index_2, 1);
     } else {
-        printf("[%sOK%s] : Block index is correct\n", GRN, NRM);
-    }
-
-    // Nonce
-    int check_nonce_2 = getNonce(b2);
-    if(check_nonce_2 != getNonce(b2)) {
-        printf("[%sKO%s] : Block nonce is incorrect ||| more => Block.nonce : %d != nonce : %d\n", RED, NRM, check_nonce_2, getNonce(b2));
-    } else {
-        printf("[%sOK%s] : Block nonce is correct\n", GRN, NRM);
+        printf("[%sOK%s] : Block index is correct %d\n", GRN, NRM, check_index_2);
     }
 
     // Hash root
@@ -166,7 +159,6 @@ int main(void) {
     }
 
     delete_blockchain(bc);
-    
 
     return 0;
 }

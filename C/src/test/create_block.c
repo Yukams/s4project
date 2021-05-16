@@ -8,7 +8,7 @@
 #include "test.h"
 
 int main(void) {
-    /* BLOCK 1 */
+    // BLOCK 1
     printf("* ==== BLOCK 1 ==== *\n");
     
     Transactions trans_list_1 = create_transaction_list();
@@ -22,15 +22,15 @@ int main(void) {
 
     Block b1 = create_block(index_1, prev_hash_1, &trans_list_1);
 
-    /* Nombre transaction */
+    // Nombre transaction
     int check_nb_trans_1 = getNb_trans(trans_list_1);
     if(check_nb_trans_1 != nb_trans_1) {
         printf("[%sKO%s] : Block nb_trans is incorrect ||| more => Block.nb_trans : %d != nb_trans : %d\n", RED, NRM, check_nb_trans_1, nb_trans_1);
     } else {
-        printf("[%sOK%s] : Block nb_trans is correct\n", GRN, NRM);
+        printf("[%sOK%s] : Block nb_trans is correct %d\n", GRN, NRM, check_nb_trans_1);
     }
 
-    /* Previous hash */
+    // Previous hash
     char* check_prev_hash_1 = getPrev_hash(b1);
     if(strcmp(check_prev_hash_1, prev_hash_1) != 0) {
         printf("[%sKO%s] : Block prev_hash is incorrect ||| more => Block.prev_hash : %s != prev_hash : %s\n", RED, NRM, check_prev_hash_1, prev_hash_1);
@@ -38,15 +38,15 @@ int main(void) {
         printf("[%sOK%s] : Block prev_hash %s is correct\n", GRN, NRM, check_prev_hash_1);
     }
 
-    /* Indice */
+    // Indice
     int check_index_1 = getIndex(b1);
     if(check_index_1 != 0) {
         printf("[%sKO%s] : Block index is incorrect ||| more => Block.index : %d != index : %d\n", RED, NRM, check_index_1, 0);
     } else {
-        printf("[%sOK%s] : Block index is correct\n", GRN, NRM);
+        printf("[%sOK%s] : Block index is correct %d\n", GRN, NRM, check_index_1);
     }
 
-    /* Transactions */
+    // Transactions
     Transactions check_trans_list_1 = getTrans_list(b1);
     for(int i = 0; i < nb_trans_1; i++) {
         if(strcmp(getTransactionSource(check_trans_list_1, i), getTransactionSource(trans_list_1, i)) != 0 || strcmp(getTransactionDestination(check_trans_list_1, i), getTransactionDestination(trans_list_1, i)) != 0 || getTransactionRandInt(check_trans_list_1, i) != getTransactionRandInt(trans_list_1, i) || getTransactionSatoBnbValue(check_trans_list_1, i) != getTransactionSatoBnbValue(trans_list_1, i) || strcmp(getTransactionString(check_trans_list_1, i), getTransactionString(trans_list_1, i)) != 0) {
@@ -56,12 +56,12 @@ int main(void) {
         }
     }
 
-    /* Nonce */
+    // Nonce
     int check_nonce_1 = getNonce(b1);
     if(check_nonce_1 != 0) {
         printf("[%sKO%s] : Block nonce is incorrect ||| more => Block.nonce : %d != nonce : %d\n", RED, NRM, check_nonce_1, 0);
     } else {
-        printf("[%sOK%s] : Block nonce is correct\n", GRN, NRM);
+        printf("[%sOK%s] : Block nonce is correct %d\n", GRN, NRM, check_nonce_1);
     }
 
     // Hash root
@@ -92,14 +92,12 @@ int main(void) {
 
     Block b2 = create_block(index_2, prev_hash_2, &trans_list_2);
 
-    // Transactions
-    Transactions check_trans_list_2 = getTrans_list(b2);
-    for(int i = 0; i < nb_trans_2; i++) {
-        if(strcmp(getTransactionSource(check_trans_list_2, i), getTransactionSource(trans_list_2, i)) != 0 || strcmp(getTransactionDestination(check_trans_list_2, i), getTransactionDestination(trans_list_2, i)) != 0 || getTransactionRandInt(check_trans_list_2, i) != getTransactionRandInt(trans_list_2, i) || getTransactionSatoBnbValue(check_trans_list_2, i) != getTransactionSatoBnbValue(trans_list_2, i) || strcmp(getTransactionString(check_trans_list_2, i), getTransactionString(trans_list_2, i)) != 0) {
-            printf("[%sKO%s] : Block trans_list is incorrect ||| more => Block.trans_list[%d] != trans_list[%d]\n", RED, NRM, i, i);
-        } else {
-            printf("[%sOK%s] : Block trans_list %d is correct\n", GRN, NRM, i+1);
-        }
+    // Nombre transaction
+    int check_nb_trans_2 = getNb_trans(trans_list_2);
+    if(check_nb_trans_2 != nb_trans_2) {
+        printf("[%sKO%s] : Block nb_trans is incorrect ||| more => Block.nb_trans : %d != nb_trans : %d\n", RED, NRM, check_nb_trans_2, nb_trans_2);
+    } else {
+        printf("[%sOK%s] : Block nb_trans is correct %d\n", GRN, NRM, check_nb_trans_2);
     }
 
     // Previous hash
@@ -115,7 +113,17 @@ int main(void) {
     if(check_index_2 != 1) {
         printf("[%sKO%s] : Block index is incorrect ||| more => Block.index : %d != index : %d\n", RED, NRM, check_index_2, 1);
     } else {
-        printf("[%sOK%s] : Block index is correct\n", GRN, NRM);
+        printf("[%sOK%s] : Block index is correct %d\n", GRN, NRM, check_index_2);
+    }
+
+    // Transactions
+    Transactions check_trans_list_2 = getTrans_list(b2);
+    for(int i = 0; i < nb_trans_2; i++) {
+        if(strcmp(getTransactionSource(check_trans_list_2, i), getTransactionSource(trans_list_2, i)) != 0 || strcmp(getTransactionDestination(check_trans_list_2, i), getTransactionDestination(trans_list_2, i)) != 0 || getTransactionRandInt(check_trans_list_2, i) != getTransactionRandInt(trans_list_2, i) || getTransactionSatoBnbValue(check_trans_list_2, i) != getTransactionSatoBnbValue(trans_list_2, i) || strcmp(getTransactionString(check_trans_list_2, i), getTransactionString(trans_list_2, i)) != 0) {
+            printf("[%sKO%s] : Block trans_list is incorrect ||| more => Block.trans_list[%d] != trans_list[%d]\n", RED, NRM, i, i);
+        } else {
+            printf("[%sOK%s] : Block trans_list %d is correct\n", GRN, NRM, i+1);
+        }
     }
 
     // Nonce
@@ -123,7 +131,7 @@ int main(void) {
     if(check_nonce_2 != getNonce(b2)) {
         printf("[%sKO%s] : Block nonce is incorrect ||| more => Block.nonce : %d != nonce : %d\n", RED, NRM, check_nonce_2, getNonce(b2));
     } else {
-        printf("[%sOK%s] : Block nonce is correct\n", GRN, NRM);
+        printf("[%sOK%s] : Block nonce is correct %d\n", GRN, NRM, check_nonce_2);
     }
 
     // Hash root

@@ -14,6 +14,7 @@
 /*==================================================================*/
 typedef struct transactions_s* Transactions;
 
+
 /* PUBLIC */
 long int toSatoBnb(double value);
 double fromSatoBnb(long int value);

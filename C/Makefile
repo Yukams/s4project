@@ -32,7 +32,7 @@ CHAIN_MAIN = create_blockchain.o
 CHAIN_C = blockchain.o
 
 CHAIN_DEP = $(BLOCK_DEP) $(CHAIN_C)
-CHAIN_ALL = $(CHAIN_DEP) $(CHAIN_MAIN)
+CHAIN_ALL = $(CHAIN_DEP) $(CHAIN_MAIN) # FOR TEST
 
 
 # COINBASE
@@ -68,11 +68,11 @@ main: $(MAIN_ALL)
 	mv *.o $(OBJDIR)/
 
 %.o: $(TESTDIR)/%.c
-	$(CC) -o $@ -c $< $(SYS) $(INC)
+	$(CC) -o $@ -c $< $(SYS) $(INC) 
 %.o: $(MAINDIR)/%.c
-	$(CC) -o $@ -c $< $(SYS) $(INC)
+	$(CC) -o $@ -c $< $(SYS) $(INC) 
 %.o: $(UTILDIR)/%.c
-	$(CC) -o $@ -c $< $(SYS) $(INC)
+	$(CC) -o $@ -c $< $(SYS) $(INC) 
 
 clean:
 	rm -f *.o

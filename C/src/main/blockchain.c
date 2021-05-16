@@ -4,9 +4,9 @@ struct blockchain_s {
     int difficulty;
     int nb_blocs;
     int max_size;
-    Block *block_list;
+    int indexHead;
+    Block *block_list; //[b1][b2][b3][b4]
 };
-
 
 /* PUBLIC */
 Blockchain create_blockchain(int difficulty, int max_size) {
@@ -24,6 +24,7 @@ Blockchain create_blockchain(int difficulty, int max_size) {
     blockchain->max_size = max_size;
     blockchain->block_list[0] = genesis;
     blockchain->nb_blocs = 1;
+    blockchain->indexHead = 1;
     return blockchain;
 }
 

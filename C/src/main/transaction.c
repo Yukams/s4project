@@ -31,7 +31,7 @@ void delete_transaction(TransactionUnit transaction) {
 
 TransactionUnit create_transaction() {
     TransactionUnit transaction = malloc(sizeof(struct transactionUnit_s));
-    if(transaction == NULL) {
+    if(transaction == NULL){
         printf("\n*** Error : malloc transaction ***\n");
     }
     return transaction;
@@ -130,6 +130,8 @@ char* getString(TransactionUnit transaction) {
     return transaction->string;
 }
 
+
+
 // TRANSACTION LIST PART
 char* getTransactionSource(Transactions transaction_list, int indice) {
     return getSource(transaction_list->trans_list[indice]);
@@ -154,3 +156,4 @@ int getTransactionRandInt(Transactions transaction_list, int indice) {
 char* getTransactionString(Transactions transaction_list, int indice) {
     return getString(transaction_list->trans_list[indice]);
 }
+

@@ -16,6 +16,7 @@ struct coinbase_s {
     double masseMoneitaire;
     bool isPhaseInflation;
     UserDB userDB;
+    TransactionsGlob super_list;
 };
 
 
@@ -107,6 +108,7 @@ void transfer_money(Coinbase coinbase, UserUnit user1,UserUnit user2, double mon
     user_to_string(bufferU1, user1);
     user_to_string(bufferU2, user2);
     add_transaction(transaction_list,bufferU1,bufferU2,money); // transaction à "UserN"
+    
     coinbase->masseMoneitaire += money;
 }
 
@@ -120,6 +122,7 @@ Coinbase create_coin_base(Blockchain blockchain){ //CONSTRUCTEUR
     cb->userDB = init_user_DB(blockchain);
     cb->isPhaseInflation = true; 
     cb->masseMoneitaire = 50;
+    cb->super_list = create_transaction_global(getMax_size(blockchain));
     return cb;
 }
 
@@ -158,21 +161,31 @@ void helicopter_money(Coinbase coinbase){
     }
 }
 
+void set_super_list(Coinbase coinbase){
+    Blockchain bc = get_blockchain_from_CB(coinbase);
+    Block b;
+    Transactions transaction_list;
+    for(int i = 0; i<getNb_blocs(bc);i++){
+        b = getBlock_list(bc)[i];
+        transaction_list = getTrans_list(b);
+        add_transaction_global(coinbase->super_list,transaction_list);
+    }
+}
 
-Transactions phase_marche(Coinbase coinbase){
+void phase_marche(Coinbase coinbase){
     Blockchain blockchain = get_blockchain_from_CB(coinbase);
     Transactions transaction_list;
-    
-    Transactions super_liste[getMax_size(blockchain)];
+    //Block b;
 
     int randTX1,randTX2, nbTransactionBlock, nbTransaction, nbBlockReste;
     double value;
     UserUnit randUser1,randUser2;
     nbBlockReste = getMax_size(blockchain)-getNb_blocs(blockchain);
-    nbTransaction = randMinMax(1,nbBlockReste/2); // entre une transaction minimum et Nombre de block restant / 2
+    nbTransaction = randMinMax(1,nbBlockReste); // entre une transaction minimum et Nombre de block restant / 2
     for(int i=0; i<nbTransaction; i++){
         transaction_list = create_transaction_list();
-        nbTransactionBlock = randMinMax(1,MAX_TRANS-1);
+        nbTransactionBlock = randMinMax(1,MAX_TRANS-2);                                                         //RECHANGER EN MAX_TRANS
+        
         for(int j=0; j<nbTransactionBlock;j++){
             randTX1 = randIntMax(get_nb_user(get_DB_from_CB(coinbase)));
             randTX2 = randIntMax(get_nb_user(get_DB_from_CB(coinbase)));
@@ -183,10 +196,11 @@ Transactions phase_marche(Coinbase coinbase){
             value = randIntMax(MAX_MONEY_BNB);
             transfer_money(coinbase,randUser1,randUser2,value,transaction_list);
         }
+
         add_block(blockchain,&transaction_list);
-        super_liste[i] = transaction_list;
+        
     }
-    return *super_liste;
+    set_super_list(coinbase);
 }
 
 void copie_transaction_list(Transactions transList1, Transactions transList2,int indexTrans){
@@ -196,9 +210,13 @@ void copie_transaction_list(Transactions transList1, Transactions transList2,int
     /*==============COPIE DES DATA RECUP A LA LISTE DE TRANSACTION CIBLE==============*/
     add_transaction(transList2,source,destination,value);
 }
-/*
+
+Transactions get_tl_from_super(Transactions *super_liste, int index){
+    return super_liste[index];
+}
+
 void mine_function(Coinbase coinbase){
-    Blockchain blockchain = get_blockchain_from_CB(coinbase);
+    /*Blockchain blockchain = get_blockchain_from_CB(coinbase);
     int indexFIFO = 0,tailleSuperListe,randTotalTransactionPrise,totalTransactionListBlock;
     //tailleSuperListe = getMax_size(blockchain);
     Transactions *super_liste = phase_marche(coinbase);
@@ -217,15 +235,21 @@ void mine_function(Coinbase coinbase){
             copie_transaction_list(super_liste[i],transactions_list,indexFIFO);
         add_block(blockchain,&transactions_list);
     }
-}
-*/
+    */
+   
+    int i = 1;
 
+    
+   
+}
+/*create Global;    add_tl_global;     remove Global;    get_tl_global*/
+/*
 void mine(Coinbase coinbase){
     int NbTransToMine = randIntMaxInclu(MAX_TRANS);
     Blockchain bc = get_blockchain_from_CB(coinbase);
     double award = 50;
     int checkIndexMined[MAX_BLOCK_MINE_AWARD];
-    /*===============User Mineur===============*/
+    //===============User Mineur===============
         UserUnit miner;
         int randUser = randIntMax(get_nb_user(get_DB_from_CB(coinbase)));
         miner = get_user_from_CB(coinbase,randUser);
@@ -236,13 +260,13 @@ void mine(Coinbase coinbase){
         Transactions tl_dest = create_transaction_list();
         
         while(blockMined < MAX_BLOCK_MINE_AWARD){
-            /*===============Choix du Block Random===============*/
+            //===============Choix du Block Random===============
             Block b;
             int lastIndex = getNb_blocs(bc)-1; //si 9b => 0,8
             int randBlockIndex = randIntMaxInclu(lastIndex); //exclu genesis => [b1]=>[dernier_b_added]
             b = getBlock_list(bc)[randBlockIndex];
 
-            /*===============Choix de la Transaction Random===============*/
+            //===============Choix de la Transaction Random===============
             Transactions transaction_list = getTrans_list(b);//liste de trans du block
             
             int maxTransBlock = getNb_trans(transaction_list); //nb de trans max du block (1->x); x = 1,10
@@ -252,11 +276,11 @@ void mine(Coinbase coinbase){
                     canMine = false;
             }
             if(canMine){
-                /*===============Recup Info Trans===============*/
+                //===============Recup Info Trans===============
                 char *source = getTransactionSource(transaction_list,indexTransRand);
                 char *destination = getTransactionDestination(transaction_list,indexTransRand);
                 double value = getTransactionBnbValue(transaction_list,indexTransRand);
-                /*===============Copie Info Trans===============*/
+                //===============Copie Info Trans===============
                 add_transaction(tl_dest,source,destination,value);
                 checkIndexMined[blockMined] = indexTransRand;
                 blockMined++;
@@ -270,7 +294,7 @@ void mine(Coinbase coinbase){
     }
     //printf("%s mined %d!\n");
 
-}
+}*/
 
 void delete_user(UserUnit user){
     free(user);

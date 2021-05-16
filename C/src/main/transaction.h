@@ -13,6 +13,7 @@
 
 /*==================================================================*/
 typedef struct transactions_s* Transactions;
+typedef struct transactions_list_global_s* TransactionsGlob;
 
 
 /* PUBLIC */
@@ -24,6 +25,11 @@ void add_transaction_genesis(Transactions transactions_list);
 void add_transaction(Transactions transaction_list, char * source, char * destination, double value);
 int getNb_trans(Transactions transaction_list);
 char * getTrans_listStrings(Transactions transaction_list, int indice);
+/*GLOBAL*/
+Transactions get_tl_from_global(TransactionsGlob super_liste, int index);
+void add_transaction_global(TransactionsGlob super_liste, Transactions transactions_list);
+void remove_global(TransactionsGlob super_liste);
+TransactionsGlob create_transaction_global(int taille);
 
 /* FOR DEBUG PURPOSE */
 char* getTransactionSource(Transactions transaction_list, int indice);

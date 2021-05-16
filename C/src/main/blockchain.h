@@ -4,6 +4,7 @@
 #define NB_BLOCKS 100
 
 typedef struct blockchain_s* Blockchain;
+//typedef struct transactionUnit_s *TransactionUnit;
 
 /* PUBLIC */
 Blockchain create_blockchain(int difficulty, int max_size);

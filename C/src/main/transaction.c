@@ -1,5 +1,6 @@
 #include "transaction.h"
 
+
 /*==================================================================*/
 /* STRUCTURE */
 typedef struct transactionUnit_s {
@@ -14,9 +15,38 @@ struct transactions_s {
     int nb_trans;
     TransactionUnit trans_list[MAX_TRANS];
 };
-
+/*GLOBAL*/
+struct transactions_list_global_s{
+    int nb_transListe;
+    Transactions *super_liste;
+};
 /*==================================================================*/
 /* FUNCTIONS */
+/*GLOBAL*/
+TransactionsGlob create_transaction_global(int taille) {
+    TransactionsGlob super_liste = malloc(taille*sizeof(struct transactions_s));
+    if(super_liste == NULL){
+        printf("\n*** Error : malloc transaction ***\n");
+    }
+    super_liste->nb_transListe = 0;
+    return super_liste;
+}
+
+void add_transaction_global(TransactionsGlob super_liste, Transactions transactions_list){
+    super_liste->super_liste[super_liste->nb_transListe] = transactions_list;
+    super_liste->nb_transListe+=1;
+}
+
+void remove_global(TransactionsGlob super_liste){
+    free(super_liste);
+}
+
+Transactions get_tl_from_global(TransactionsGlob super_liste, int index){
+    return super_liste->super_liste[index];
+}
+/*==================================================================*/
+
+
 
 /* PRIVATE */
 // Transaction Unit part

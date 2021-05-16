@@ -21,8 +21,8 @@ Coinbase create_coin_base(Blockchain blockchain);
 void add_user_to_cb(Coinbase coinbase);
 
 void helicopter_money(Coinbase coinbase);
-Transactions phase_marche(Coinbase coinbase);
-void mine(Coinbase coinbase);
+void phase_marche(Coinbase coinbase);
+void mine_function(Coinbase coinbase);
 
 void delete_coinbase(Coinbase coinbase);
 

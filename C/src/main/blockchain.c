@@ -48,7 +48,7 @@ void add_block(Blockchain blockchain, Transactions *transaction_list) {
         Block block = create_block(blockchain->nb_blocs, getHash(blockchain->block_list[blockchain->nb_blocs - 1]),
                                    transaction_list);
         if (getIndex(block) != 0) {
-            find_good_hash(block, blockchain->difficulty);
+            //find_good_hash(block, blockchain->difficulty);
         }
         blockchain->block_list[blockchain->nb_blocs] = block;
         blockchain->nb_blocs += 1;

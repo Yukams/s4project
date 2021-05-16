@@ -4,9 +4,9 @@
 #include <stdbool.h>
 #include "../test/test.h"
 
-#define MAX_USERS 100
+#define MAX_USERS 30
 #define USER_STR_LEN 20
-#define MAX_MONEY_BNB 100
+#define MAX_MONEY_BNB 80
 #define MAX_BLOCK_MINE_AWARD 3 //MAX BLOCKS TO MINE BEFORE GIVING AWARD
 /*=======================STRUCT======================================*/
 
@@ -36,7 +36,7 @@ UserUnit get_user_from_CB(Coinbase coinbase, int index);
 double get_masse_monetaire(Coinbase coinbase);
 
 //User
-int get_user_wallet(UserDB userDB, int index);
+double get_user_wallet(UserDB userDB, int index);
 int get_nb_user(UserDB userDB);
 int get_user_index(UserDB userDB, int index);
 

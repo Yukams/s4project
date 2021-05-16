@@ -32,17 +32,25 @@ CHAIN_MAIN = create_blockchain.o
 CHAIN_C = blockchain.o
 
 CHAIN_DEP = $(BLOCK_DEP) $(CHAIN_C)
-CHAIN_ALL = $(CHAIN_DEP) $(CHAIN_MAIN) # FOR TEST
+CHAIN_ALL = $(CHAIN_DEP) $(CHAIN_MAIN)
 
 
 # COINBASE
 COIN_C = coinbase.o
 
 COIN_DEP = $(CHAIN_DEP) $(COIN_C)
+
+
+# DISPLAY
+DISPLAY_C = display.o
+
+DISPLAY_DEP = $(COIN_DEP) $(DISPLAY_C)
+
+
 # MAIN
 MAIN_C = main.o
 
-MAIN_ALL = $(COIN_DEP) $(MAIN_C)
+MAIN_ALL = $(DISPLAY_DEP) $(MAIN_C)
 
 
 

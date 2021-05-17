@@ -18,6 +18,14 @@ public class TransactionUnit {
 		 this.string = "Source user" + this.source + "-Destination : user" + this.destination + this.randint + this.value;
 	}
 	
+	protected TransactionUnit() {
+		this.source = null ;
+		this.destination = null ;
+		this.randint = getRandomNumberInRange(0, 100);
+		this.value = 0 ;
+		this.string="genesis";
+		
+	}
 	
 	private static int getRandomNumberInRange(int min, int max) {
         if (min >= max) {

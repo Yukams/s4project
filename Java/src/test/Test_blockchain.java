@@ -10,7 +10,7 @@ public class Test_blockchain {
 	public static void main(String[] args) {
 		System.out.println("Initialisation Blockchain :");
 		
-		Blockchain bc = new Blockchain();
+		Blockchain bc = new Blockchain(4,10,100);
 		
 		int check_difficulty = bc.getDifficulty();
 		if(check_difficulty == 4) {
@@ -49,10 +49,10 @@ public class Test_blockchain {
 		}
 		
 		int check_nb_trans_1 = b1.getNb_trans();
-		if(check_nb_trans_1 == 0) {
+		if(check_nb_trans_1 == 1) {
 			System.out.println("	[OK] * nb_trans : " + check_nb_trans_1);
 		} else {
-			System.out.println("	[KO] * nb_trans : " + check_nb_trans_1 + " /// should be '0'");
+			System.out.println("	[KO] * nb_trans : " + check_nb_trans_1 + " /// should be '1'");
 		}
 		String check_hash_root_1 = b1.getHash_root();
 		System.out.println("	[OK] * hash_root : " + check_hash_root_1);
@@ -69,7 +69,7 @@ public class Test_blockchain {
 		
 		System.out.println("\nAjout d'un bloc :");
 		
-		Transactions trans_list = new Transactions();
+		Transactions trans_list = new Transactions(10);
 		trans_list.addTransaction("Pierre", "Paul", 2);
 		bc.addBlock(trans_list);
 		

@@ -46,7 +46,7 @@ public class Block {
 			
 			return "0";
 		}
-		String [] hash_trans= new String [10];
+		String [] hash_trans= new String [this.nb_trans+1];
 		int compteur_arbre = this.nb_trans;
 		
 		String hashRes;
@@ -151,13 +151,6 @@ public class Block {
 	
 	public void incrementNonce() {
 		this.nonce = this.nonce+1;
-	}
-
-	/**
-	 * @param hash_root the hash_root to set
-	 */
-	public void setHash_root(String hash_root) {
-		this.hash_root = hash_root;
 	}
 
 	/**

@@ -1,6 +1,5 @@
 package main;
 
-import java.util.Random;
 
 public class UserDB{
 	private User userList[];
@@ -28,7 +27,8 @@ public class UserDB{
 			Creator.add_money(50);
 			tl.addTransaction("Coinbase", userS, 50);
 			
-			blockchain.addBlock(tl);							
+			blockchain.addBlock(tl);
+			System.out.println("\n{Creator ajouté! =>Genesis initialisé}\n");
 
 		}
 		else {System.out.println("*** Erreur : Impossible d'initialiser une base de donnée pour la blockchain ***");}

@@ -13,8 +13,11 @@ public class User {
 		return "User"+Integer.toString(this.identifiant);
 	}
 
-	public void add_money(int value) {
+	public void add_money(double value) {
 		this.wallet += value;
+	}
+	public void sub_money(double value) {
+		this.wallet -= value;
 	}
 	
 	/**

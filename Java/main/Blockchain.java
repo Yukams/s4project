@@ -54,9 +54,13 @@ public class Blockchain {
 	}
 	
 	private void addGenesisBlock() {
+<<<<<<< HEAD:Java/src/main/Blockchain.java
 		Transactions genesis= new Transactions(this.nb_max_trans);
 		genesis.addGenesisTransaction();
 		this.block_list[this.nb_blocs] = new Block(0, "0", genesis);
+=======
+		this.block_list[this.nb_blocs] = new Block(0, "0", new Transactions(this.nb_max_trans));
+>>>>>>> a528e3d8d960a9d11940929b578ef0e819439498:Java/main/Blockchain.java
 		this.nb_blocs++;
 	}
 

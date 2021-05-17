@@ -54,12 +54,17 @@ public class Coinbase { //super utilisateur coinbase
 	
 	void trans_aleatoire() {
 		int nbUsersInDB = this.userDB.getNbUsers();
+		int nbBlockRestant = this.blockchain.getNb_block_max() - this.blockchain.getNb_blocs();
 		if (nbUsersInDB <= 1){
             System.out.println("Il faut au moins deux utilisateurs pour effectuer cette action");
             return;
         }
-		int nbBlockRestant = this.blockchain.getNb_block_max() - this.blockchain.getNb_blocs();
-		int nbRandTotal = getRandomNumberInRange(1,nbBlockRestant-1);
+		else if(nbBlockRestant == 0) {
+			System.out.println("Le maximum de la Blockchain est atteint");
+			return;
+		}
+		
+		int nbRandTotal = getRandomNumberInRange(1,nbBlockRestant);
 		int nbTransMaxBlock = this.blockchain.getNb_max_trans();
 		int nbTransBlock, randU1, randU2;
 		double value;

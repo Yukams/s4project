@@ -3,12 +3,16 @@ package main;
 public class Blockchain {
 	private int difficulty;
     private int nb_blocs;
+    private int nb_max_trans;
+    private int nb_block_max;
     private Block block_list[];
 	
-	public Blockchain() {
+	public Blockchain(int difficulty, int nb_max_max, int nb_block_max) {
 		this.nb_blocs = 0;
-		this.difficulty = 4;
-		this.block_list = new Block[100];
+		this.difficulty = difficulty;
+		this.nb_max_trans = nb_max_max;
+		this.nb_block_max = nb_block_max;
+		this.block_list = new Block[nb_block_max];
 		
 		addGenesisBlock();
 	}
@@ -50,7 +54,7 @@ public class Blockchain {
 	}
 	
 	private void addGenesisBlock() {
-		this.block_list[this.nb_blocs] = new Block(0, "0", new Transactions());
+		this.block_list[this.nb_blocs] = new Block(0, "0", new Transactions(this.nb_max_trans));
 		this.nb_blocs++;
 	}
 
@@ -75,4 +79,29 @@ public class Blockchain {
 		return block_list;
 	}
 
+	/**
+	 * @return the nb_trans_max
+	 */
+	public int getNb_max_trans() {
+		return nb_max_trans;
+	}
+	/**
+	 * @return nbTransTotal
+	 */
+	public int getNbTransTotal() {
+		int compteur = 0;
+		int nbBlocksCurrent = this.getNb_blocs();
+		for(int i = 0; i<nbBlocksCurrent;i++) {
+			compteur += this.getBlock_list()[i].getNb_trans();
+		}
+		return compteur;
+		
+	}
+
+	/**
+	 * @return the nb_block_max
+	 */
+	public int getNb_block_max() {
+		return nb_block_max;
+	}
 }

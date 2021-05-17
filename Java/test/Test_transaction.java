@@ -8,7 +8,7 @@ public class Test_transaction {
 	public static void main(String[] args) {
 		System.out.println("Transaction 1 :");
 		
-		Transactions tList = new Transactions();
+		Transactions tList = new Transactions(10);
 		tList.addTransaction("Pierre", "Paul", 2);
 		TransactionUnit t1 = tList.getTrans_list()[0];
 		

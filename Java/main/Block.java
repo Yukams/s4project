@@ -20,8 +20,8 @@ public class Block {
 		this.prev_hash = prev_hash;
 		this.nb_trans = trans_list.getNb_trans();
 		this.trans_list = trans_list;
-		this.setHash_root(calcul_hash_root());
-		this.setHash(createHash());
+		this.hash_root = calcul_hash_root();
+		this.hash = createHash();
 		this.nonce = 0;
 	}
 	
@@ -153,12 +153,20 @@ public class Block {
 		this.nonce = this.nonce+1;
 	}
 
+	/**
+	 * @param hash_root the hash_root to set
+	 */
+	public void setHash_root(String hash_root) {
+		this.hash_root = hash_root;
+	}
+
+	/**
+	 * @param hash the hash to set
+	 */
 	public void setHash(String hash) {
 		this.hash = hash;
 	}
+
 	
-	public void setHash_root(String hash) {
-		this.hash_root = hash;
-	}
 
 }

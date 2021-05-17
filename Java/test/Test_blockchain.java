@@ -10,7 +10,7 @@ public class Test_blockchain {
 	public static void main(String[] args) {
 		System.out.println("Initialisation Blockchain :");
 		
-		Blockchain bc = new Blockchain();
+		Blockchain bc = new Blockchain(4,10,100);
 		
 		int check_difficulty = bc.getDifficulty();
 		if(check_difficulty == 4) {
@@ -69,7 +69,7 @@ public class Test_blockchain {
 		
 		System.out.println("\nAjout d'un bloc :");
 		
-		Transactions trans_list = new Transactions();
+		Transactions trans_list = new Transactions(10);
 		trans_list.addTransaction("Pierre", "Paul", 2);
 		bc.addBlock(trans_list);
 		

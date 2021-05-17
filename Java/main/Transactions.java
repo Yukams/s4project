@@ -4,9 +4,9 @@ public class Transactions {
 	private int nb_trans; // nombre de transactions
 	private TransactionUnit trans_list[]; // liste des transactions
 
-	public Transactions() {
+	public Transactions(int nb_transactions_max) { //nb trans max par block
 		this.nb_trans = 0;
-		this.trans_list = new TransactionUnit[10];
+		this.trans_list = new TransactionUnit[nb_transactions_max];
 	}
 	
 	public void addTransaction(String source, String destination, double value) {

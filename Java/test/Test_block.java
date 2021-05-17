@@ -10,12 +10,12 @@ public class Test_block {
 	public static void main(String[] args) {
 		System.out.println("Block 1 :");
 		
-		Transactions tList_1 = new Transactions();
+		Transactions tList_1 = new Transactions(10);
 		tList_1.addTransaction("Pierre", "Paul", 0.1);
 		tList_1.addTransaction("Paul", "Pierre", 1);
 		
 		
-		Blockchain bc = new Blockchain();
+		Blockchain bc = new Blockchain(4,10,100);
 		bc.addBlock(tList_1);
 		
 		Block b1 = bc.getBlock_list()[1];
@@ -75,7 +75,7 @@ public class Test_block {
 		
 		System.out.println("\n\nBlock 2 :");
 		
-		Transactions tList_2 = new Transactions();
+		Transactions tList_2 = new Transactions(10);
 		tList_2.addTransaction("Pierre", "Paul", 0.1);
 		tList_2.addTransaction("Paul", "Pierre", 1);
 		tList_2.addTransaction("Paul", "Pierre", 3);

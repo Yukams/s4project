@@ -223,6 +223,7 @@ void delete_user_DB(UserDB userDB){
     free(userDB);
 }
 void delete_coinbase(Coinbase coinbase){
+    delete_user_DB(coinbase->userDB);
     free(coinbase);
 }
 /*====================DEBUG============================*/

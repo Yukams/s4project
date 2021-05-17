@@ -34,16 +34,22 @@ bool isHelp(int argc, char **argv){
 
 int main(int argc, char *argv[]){
     int opttion_val = 0;
-    int nbBlocks = 0, nbTrans = 0, difficulty = 0;
-    if(argc == 2 && strcmp(argv[1], "-h") == 0) {help(); return 0;}
-    else if(argc < 7 || argc > 10){
-        fprintf(stderr,"\n => usage: ./%s -d (difficulty) -b (nbBlocs) -t (nbTransactions) [-c (numBlocModifier) [numTrans]]\n",argv[0]); // -c PAS IMPLEMENTER
+    int nbBlocks = 0,  difficulty = 0;
+    for(int i = 0; i<argc;i++){
+        if(strcmp(argv[i], "-h") == 0) {
+            help(); 
+            return 0;
+        }
+    }
+
+    if(argc < 5 || argc > 8){
+        fprintf(stderr,"\n => usage: ./%s -d (difficulty) -b (nbBlocs) [-c (numBlocModifier) [numTrans]]\n",argv[0]); // -c PAS IMPLEMENTER
         fprintf(stderr,"\n => \"./%s %s-h%s\" Pour afficher l'aide.\n",argv[0],CYN,NRM);
         exit(EXIT_FAILURE);
     }
     
 
-    while((opttion_val = getopt(argc, argv,"d:hb:t:c:")) != -1){ // -c PAS IMPLEMENTER
+    while((opttion_val = getopt(argc, argv,"d:hb:c:")) != -1){ // -c PAS IMPLEMENTER
         switch (opttion_val)
         {
         case 'h':
@@ -57,10 +63,6 @@ int main(int argc, char *argv[]){
             if (!isHelp(argc, argv))
                 nbBlocks = atoi(optarg);
             break;
-        case 't':
-            if (!isHelp(argc, argv))
-                nbTrans = atoi(optarg);
-            break;
         case 'c': //PAS IMPLEMENTER
             if (!isHelp(argc, argv))
                 printf("\n'-c' Non implémenté :(\n");
@@ -69,46 +71,43 @@ int main(int argc, char *argv[]){
             fprintf(stderr,"Erreur option/argument.\n");
             exit(EXIT_FAILURE);
         default:
-            fprintf(stderr,"\n[%sErreur%s] usage: %s -d (difficulty) -b (nbBlocs) -t (nbTransactions) [-c (numBlocModifier) [numTrans]]\n",RED,NRM,argv[0]);
+            fprintf(stderr,"\n[%sErreur%s] usage: %s -d (difficulty) -b (nbBlocs) [-c (numBlocModifier) [numTrans]]\n",RED,NRM,argv[0]);
             fprintf(stderr,"\n%s -h pour afficher l'aide.\n",argv[0]);
             exit(EXIT_FAILURE);
         }
     }
 
     
-    if(nbBlocks != 0 && nbTrans !=0 && difficulty !=0 ){
+    if(nbBlocks != 0 && difficulty !=0 ){
         
         Blockchain bc = create_blockchain(difficulty,nbBlocks);
         Coinbase cb = create_coin_base(bc);
-        int nbUsers = randMinMaxUsers(1,MAX_USERS);
-         //Block 0
-        //char choice = 'y';
-        //printf("Display ? (y or n) ");
-    
-        //scanf("%c",&choice);
+        int nbUsers = randMinMaxUsers(2,MAX_USERS);
+
         
         for(int i = 0;i<nbUsers;i++)
             add_user_to_cb(cb);
-        //if(choice == 'y' || choice == 'Y'){
-            display_blockchain(bc, cb);
-            display_users(cb, nbUsers);
-            printf("    [%snbUsers %sAFTER%s] => %d (WITH CREATOR)\n",CYN,GRN,NRM,get_nb_user(get_DB_from_CB(cb)));
-            display_users_index(cb, nbUsers);
-            display_coinbase_helicopter(cb);
-            helicopter_money(cb);
-            printf("    [%sTOTAL AFTER %sHELICOPTER%s] => %.2f Bnb\n",GRN,MAG,NRM,get_masse_monetaire(cb));
-            phase_marche(cb);
-            display_coinbase_marche(cb);
-            printf("    [%sTOTAL AFTER %sMARCHE%s] => %.2f Bnb\n",GRN,MAG,NRM,get_masse_monetaire(cb));
-            mine_function(cb);
-            //display_blockchain(bc, cb);
-        //}
+        
+        display_blockchain(bc, cb);
+        display_users(cb, nbUsers);
+        printf("    [%snbUsers %sAFTER%s] => %d (WITH CREATOR)\n",CYN,GRN,NRM,get_nb_user(get_DB_from_CB(cb)));
+        display_users_index(cb, nbUsers);
+
+        display_coinbase_helicopter(cb);
+        helicopter_money(cb);
+        printf("    [%sTOTAL AFTER %sHELICOPTER%s] => %.2f Bnb\n",GRN,MAG,NRM,get_masse_monetaire(cb));
+
+        printf("\n+*+*+*+*+... %sRandomTransactions%s ...+*+*+*+*+\n\n",MAG,NRM);
+        trans_aleatoire(cb);
+        //display_coinbase_marche(cb);
+        //printf("    [%sTOTAL AFTER %sMARCHE%s] => %.2f Bnb\n",GRN,MAG,NRM,get_masse_monetaire(cb));
+        display_blockchain(bc, cb);
         delete_blockchain(bc);
         delete_coinbase(cb);
     }
     else{
         fprintf(stderr,"[%sErreur%s] Arguments Incorrecte.\n",RED,NRM);
-        fprintf(stderr,"usage: %s -d (difficulty) -b (nbBlocs) -t (nbTransactions) [-c (numBlocModifier) [numTrans]]\n",argv[0]);
+        fprintf(stderr,"usage: %s -d (difficulty) -b (nbBlocs) [-c (numBlocModifier) [numTrans]]\n",argv[0]);
         fprintf(stderr,"\n%s -h pour afficher l'aide.\n",argv[0]);
         exit(EXIT_FAILURE);
     }

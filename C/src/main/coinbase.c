@@ -1,4 +1,5 @@
 #include "coinbase.h"
+
 /*==================================================================*/
 /* STRUCTURE */
 struct userUnit_s{
@@ -15,7 +16,6 @@ struct users_s{
 struct coinbase_s {
     double masseMoneitaire;
     UserDB userDB;
-    TransactionsGlob super_list;
 };
 
 
@@ -23,8 +23,10 @@ struct coinbase_s {
 /* FUNCTIONS */
 
 ///PRIVATE UTILS///
-void user_to_string(char * tag, UserUnit user){
+void user_to_string(UserUnit user, char buffer[10]){
+    char tag[10];
     sprintf(tag, "User%d", user->index);
+    strcpy(buffer,tag);
 }
 
 int randIntMax(int maxValue){
@@ -76,7 +78,7 @@ UserDB init_user_DB(Blockchain bc){ // Initialisation de la BC par creator => g�
     char tag[10];
     Creator->index = 0; //Creator = Indice 0 (userList[0] aussi)
     Creator->wallet = 50;
-    user_to_string(tag, Creator);
+    user_to_string(Creator,tag);
     add_transaction(tl,"Coinbase",tag,50);//Ajout de la transaction Genesis à la list de TX
     add_block(bc,&tl);// Creation d'un nouveau block (indice 1)
 
@@ -94,7 +96,7 @@ void add_money(Coinbase coinbase, double money, int indexUserDB, int indexBlock)
     Block b = getBlock_list(coinbase->userDB->blockChain)[indexBlock]; //Block miné
     UserUnit user = get_user_from_CB(coinbase,indexUserDB);
     char tag[10];
-    user_to_string(tag, user);
+    user_to_string(user,tag);
     add_transaction(getTrans_list(b),"Coinbase",tag,money); // transaction à "UserN"
     user->wallet += money;
     coinbase->masseMoneitaire += money;
@@ -103,10 +105,9 @@ void add_money(Coinbase coinbase, double money, int indexUserDB, int indexBlock)
 void transfer_money(Coinbase coinbase, UserUnit user1,UserUnit user2, double money, Transactions transaction_list){
     char bufferU1[10];
     char bufferU2[10];
-    user_to_string(bufferU1, user1);
-    user_to_string(bufferU2, user2);
+    user_to_string(user1,bufferU1);
+    user_to_string(user2,bufferU2);
     add_transaction(transaction_list,bufferU1,bufferU2,money); // transaction à "UserN"
-    coinbase->masseMoneitaire += money;
 }
 
 /*==================================================================*/
@@ -118,7 +119,6 @@ Coinbase create_coin_base(Blockchain blockchain){ //CONSTRUCTEUR
     if(cb == NULL) printf("\n*** Error : malloc UserDB ***\n");
     cb->userDB = init_user_DB(blockchain);
     cb->masseMoneitaire = 50;
-    cb->super_list = create_transaction_global(getMax_size(blockchain));
     return cb;
 }
 
@@ -139,10 +139,9 @@ void helicopter_money(Coinbase coinbase){
         b = getBlock_list(bc)[lastIndex];
         transaction_list = getTrans_list(b);
         nbTransactionBlock = getNb_trans(transaction_list);
-        /* printf("=> TOTAL MM : %d\n",get_masse_monetaire(coinbase));
-        printf("=> User%d reçoit 50 Bnb\n",get_user_index(get_DB_from_CB(coinbase),i)); */
+        //printf("=> User%d reçoit 50 Bnb\n",get_user_index(get_DB_from_CB(coinbase),i));
         if(nbTransactionBlock<MAX_TRANS)
-            add_money(coinbase,50,i,lastIndex);//incrémente la masse monétaire
+            add_money(coinbase,50,i,lastIndex);
         else {
             if(lastIndex+1 == getMax_size(bc) && nbTransactionBlock == MAX_TRANS){
                 printf("*** Error : Taille Max BlockChain atteinte ***\n");
@@ -157,119 +156,61 @@ void helicopter_money(Coinbase coinbase){
     }
 }
 
-void set_super_list(Coinbase coinbase){
-    Blockchain bc = get_blockchain_from_CB(coinbase);
-    Block b;
-    Transactions transaction_list;
-    for(int i = 0; i<getNb_blocs(bc);i++){
-        b = getBlock_list(bc)[i];
-        transaction_list = getTrans_list(b);
-        add_transaction_global(coinbase->super_list,transaction_list);
-    }
-}
 
-void phase_marche(Coinbase coinbase){
+void trans_aleatoire(Coinbase coinbase){
     Blockchain blockchain = get_blockchain_from_CB(coinbase);
     Transactions transaction_list;
 
-    int randTX1,randTX2, nbTransactionBlock, nbTransaction, nbBlockReste;
+    int nbTransactionBlock, nbTransaction, nbBlockReste;
     double value;
     UserUnit randUser1,randUser2;
     nbBlockReste = getMax_size(blockchain)-getNb_blocs(blockchain);
     nbTransaction = randMinMax(1,nbBlockReste);
+    int maxNbUser = get_nb_user(get_DB_from_CB(coinbase));
+
+    int nbrand = randMinMax(1,maxNbUser/2);
+
+    int aleatoire = nbrand;
+    int nbRandUser1, nbRandUser2;
     for(int i=0; i<nbTransaction; i++){
         transaction_list = create_transaction_list();
         nbTransactionBlock = randMinMax(1,MAX_TRANS);
         
         for(int j=0; j<nbTransactionBlock;j++){
-            randTX1 = randIntMax(get_nb_user(get_DB_from_CB(coinbase)));
-            randTX2 = randIntMax(get_nb_user(get_DB_from_CB(coinbase)));
 
-            randUser1 = get_user_from_CB(coinbase,randTX1);
-            randUser2 = get_user_from_CB(coinbase,randTX2);
-        
-            value = randIntMax(MAX_MONEY_BNB);
-            
+            randUser1 = get_user_from_CB(coinbase,aleatoire);
+            nbRandUser1 = aleatoire;
+            nbrand = ((nbrand + nbrand)*(j+1)+1);
+            aleatoire = nbrand%maxNbUser;
+            if(nbRandUser1 == aleatoire){aleatoire = (aleatoire+1)%maxNbUser;}
+            randUser2 = get_user_from_CB(coinbase,aleatoire);
+            nbRandUser2 = aleatoire;
+            nbrand = (nbrand + nbrand)*(j+2)+1;
+            aleatoire = nbrand%maxNbUser;
+            if(nbrand > 1000000){nbrand = randMinMax(1,maxNbUser/2);}
+  
+            value = randMinMax(1,MAX_MONEY_BNB_TRANS);
             if(value<=randUser1->wallet){
-                randTX1 = randIntMax(get_nb_user(get_DB_from_CB(coinbase)));
-                randUser1 = get_user_from_CB(coinbase,randTX1);
                 transfer_money(coinbase,randUser1,randUser2,value,transaction_list);
+                printf("\n----------BEFORE---------\n");
+                printf("User%s%d%s: {%.2fBnb}\n",RED,nbRandUser1,NRM,randUser1->wallet);
+                printf("User%s%d%s: {%.2fBnb}\n",GRN,nbRandUser2,NRM,randUser2->wallet); 
                 randUser1->wallet -= value;
                 randUser2->wallet += value;
+                printf("-----------------------");
+                printf("\n-------TRANSACTION------\n");
+                printf("User%s%d%s envoie %s'%.2f'%s Bnb à User%s%d%s\n",RED,nbRandUser1,NRM,YEL,value,NRM,GRN,nbRandUser2,NRM);
+                printf("-----------------------\n");
+                printf("----------AFTER--------\n");
+                printf("User%s%d%s: {%.2fBnb}\n",RED,nbRandUser1,NRM,randUser1->wallet);
+                printf("User%s%d%s: {%.2fBnb}\n",GRN,nbRandUser2,NRM,randUser2->wallet); 
+                printf("-----------------------\n");
             }
         }
         add_block(blockchain,&transaction_list);
-        
     }
-    set_super_list(coinbase);
 }
 
-void copie_transaction_list(Transactions transList1, Transactions transList2,int indexTrans){
-    char source[MAX_STRING_LENGTH+1];
-    strcpy(source,getTransactionSource(transList1,indexTrans));
-    
-    char destination[MAX_STRING_LENGTH+1];
-    strcpy(destination,getTransactionDestination(transList1,indexTrans));
-    
-    double value = getTransactionBnbValue(transList1,indexTrans);
-    /*==============COPIE DES DATA RECUP A LA LISTE DE TRANSACTION CIBLE==============*/
-    add_transaction(transList2,source,destination,value);
-}
-
-
-void mine_function(Coinbase coinbase){
-    //////BlockChain + Transaction
-    int indexFIFOTrans,indexFIFOtl,randTotalTransactionPrise,blockMined = 0;
-    Blockchain blockchain = get_blockchain_from_CB(coinbase);
-    //int totalTransactionBC = getNbTransTotal(blockchain);
-
-    indexFIFOtl = get_index_fifo_tl(coinbase->super_list);
-    indexFIFOTrans = get_index_fifo_trans(coinbase->super_list);
-
-    Transactions tl_source = get_tl_from_global(coinbase->super_list,indexFIFOtl); // Liste source à copié
-    Transactions tl_dest = create_transaction_list();
-
-    randTotalTransactionPrise = randMinMax(1,MAX_TRANS);
-    
-    //////// User Mineur
-    UserUnit miner;
-    int randUser = randIntMax(get_nb_user(get_DB_from_CB(coinbase)));
-    miner = get_user_from_CB(coinbase,randUser);
-    double valueMined = 50;
-    ////////////////////////
-    printf("\n_________________MINAGE_______________________\n\n");
-    printf("%sMiner's %sWallet Before = %.2f\n",YEL,NRM,miner->wallet);
-    printf("Mining...\n");
-    for(int i = 0; i<randTotalTransactionPrise;i++){
-        if(indexFIFOTrans<getNb_trans(tl_source)){
-            copie_transaction_list(tl_source,tl_dest,indexFIFOTrans);//copie le contenue de la TL[indexFIFOTrans] dans une nouvelle liste
-            incr_index_fifo_trans(coinbase->super_list);//passe à la trans suivante
-        }
-        else if(indexFIFOTrans == getNb_trans(tl_source)){
-            if(getNb_blocs(blockchain)<getMax_size(blockchain)){
-                add_block(blockchain,&tl_dest);
-                tl_dest = create_transaction_list();
-                incr_index_fifo_tl(coinbase->super_list);
-                indexFIFOtl = get_index_fifo_tl(coinbase->super_list);
-                tl_source = get_tl_from_global(coinbase->super_list,indexFIFOtl);
-                reset_index_fifo_trans(coinbase->super_list);
-                indexFIFOTrans = 0;
-                blockMined++;
-                printf("(+)%s%.2f%s Bnb !\n",YEL,valueMined,NRM);
-            }
-            else{printf("*** Error : Taille Max BlockChain atteinte ***\n");return;}
-        }
-    }
-    add_block(blockchain,&tl_dest); //block auto miné
-    blockMined++;
-    printf("[%sBlocks Mined%s] => %d...\n",BLU,NRM,blockMined);
-
-    miner->wallet += valueMined;
-    coinbase->masseMoneitaire += valueMined;
-
-    printf("%sMiner's %sWallet After = %.2f\n",YEL,NRM,miner->wallet);
-   
-}
 
 
 void delete_user(UserUnit user){

@@ -94,16 +94,3 @@ int getNb_blocs(Blockchain blockchain) {
 Block *getBlock_list(Blockchain blockchain) {
     return blockchain->block_list;
 }
-
-int getNbTransTotal(Blockchain blockchain){ //includes genesis
-    Block b;
-    Transactions tl;
-    int TransTotal = 0,nbTransBlock;
-    for(int i = 0; i<getNb_blocs(blockchain);i++){
-        b = getBlock_list(blockchain)[i];
-        tl = getTrans_list(b);
-        nbTransBlock = getNb_trans(tl);
-        TransTotal+=nbTransBlock;
-    }
-    return TransTotal;
-}

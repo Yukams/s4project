@@ -75,11 +75,11 @@ main: $(MAIN_ALL)
 	mv *.o $(OBJDIR)/
 
 %.o: $(TESTDIR)/%.c
-	$(CC) -o $@ -c $< $(SYS) $(INC)
+	$(CC) -o $@ -c $< $(SYS) $(INC) -g
 %.o: $(MAINDIR)/%.c
-	$(CC) -o $@ -c $< $(SYS) $(INC)
+	$(CC) -o $@ -c $< $(SYS) $(INC) -g
 %.o: $(UTILDIR)/%.c
-	$(CC) -o $@ -c $< $(SYS) $(INC)
+	$(CC) -o $@ -c $< $(SYS) $(INC) -g
 
 clean:
 	rm -f *.o

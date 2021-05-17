@@ -3,16 +3,16 @@
 void display_blockchain(Blockchain bc, Coinbase cb){
     Block b;
     printf("\n/\\==========[%sBLOCKCHAIN (MAX %d)%s]==========/\\\n\n",YEL,getMax_size(bc),NRM);
-    printf("\n/\\---------------------------------(Blocks)------------------------------/\\\n");
-    printf("************************************************************************\n");
+    printf("\n/\\----------------------------------------(Blocks)------------------------------------/\\\n");
+    printf("  ************************************************************************************\n");
     for(int i = 0; i<getNb_blocs(get_blockchain_from_CB(cb)); i++){
         b = getBlock_list(get_blockchain_from_CB(cb))[i];
-        printf("    [%sHash Block     %s%d%s] => %s\n",GRN,RED,getIndex(b),NRM,getHash(b));
-        printf("    [%sPrevHash Block %s%d%s] => %s\n",RED,GRN,getIndex(b),NRM,getPrev_hash(b));
-        printf("    [%snbTrans Block  %s%d%s] => %d\n",GRN,YEL,getIndex(b),NRM,getNb_trans(getTrans_list(b)));
-        printf("************************************************************************\n");
+        printf("    [%sHash Block     %d%s] => %s\n",GRN,getIndex(b),NRM,getHash(b));
+        printf("    [%sPrevHash Block %d%s] => %s\n",RED,getIndex(b),NRM,getPrev_hash(b));
+        printf("    [%snbTrans Block  %d%s] => %d\n",YEL,getIndex(b),NRM,getNb_trans(getTrans_list(b)));
+        printf("  **************************************************************************************\n");
     }
-    printf("\\/------------------------------------------------------------------------\\/\n\n\n");
+    printf("\\/--------------------------------------------------------------------------------------\\/\n\n\n");
 }
 /*===============================[USERS]=====================================*/
 void display_users(Coinbase cb, int nbUsers){
@@ -28,7 +28,7 @@ void display_users_index(Coinbase cb, int nbUsers){
     }
     
     printf("\n    [%sTOTAL USER%s] NBUSERS => '%d'\n",CYN,NRM,get_nb_user(get_DB_from_CB(cb))); //0 ==> CREATOR ==> UserN
-    printf("\\/------------------------------------------------------------------------\\/\n");
+    printf("\\/====================================\\/\n");
 }
 
 /*===============================[MONEY MANAGEMENT]=====================================*/
@@ -37,11 +37,11 @@ void display_coinbase_helicopter(Coinbase cb){
     printf("    [%sTOTAL BEFORE %sHELICO%s] => %.2f Bnb\n",RED,MAG,NRM,get_masse_monetaire(cb));
     printf("\n+*+*+*+*+... %sHelicopterMoney%s ...+*+*+*+*+\n\n",MAG,NRM);
 }
-void display_coinbase_marche(Coinbase cb){
-    printf("\n/\\==========[%sMONEY SUPPLY%s]==========/\\\n\n",YEL,NRM);
-    printf("    [%sTOTAL BEFORE %sMARCHÉ%s] => %.2f Bnb\n",RED,MAG,NRM,get_masse_monetaire(cb));
-    printf("\n+*+*+*+*+... %sMarché%s ...+*+*+*+*+\n\n",MAG,NRM);
+
+void display_coinbase_rand_trans(Coinbase cb){
+    printf("\n+*+*+*+*+... %sRandomTransactions%s ...+*+*+*+*+\n",MAG,NRM);
 }
+
 void display_all_users_wallets(Coinbase cb){
     int nb_users = get_nb_user(get_DB_from_CB(cb));
     for(int i = 0; i< nb_users; i++)

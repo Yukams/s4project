@@ -4,9 +4,9 @@
 #include <stdbool.h>
 #include "../test/test.h"
 
-#define MAX_USERS 30
+#define MAX_USERS 15
 #define USER_STR_LEN 20
-#define MAX_MONEY_BNB 80
+#define MAX_MONEY_BNB_TRANS 5
 #define MAX_BLOCK_MINE_AWARD 3 //MAX BLOCKS TO MINE BEFORE GIVING AWARD
 /*=======================STRUCT======================================*/
 
@@ -21,7 +21,7 @@ Coinbase create_coin_base(Blockchain blockchain);
 void add_user_to_cb(Coinbase coinbase);
 
 void helicopter_money(Coinbase coinbase);
-void phase_marche(Coinbase coinbase);
+void trans_aleatoire(Coinbase coinbase);
 void mine_function(Coinbase coinbase);
 
 void delete_coinbase(Coinbase coinbase);
